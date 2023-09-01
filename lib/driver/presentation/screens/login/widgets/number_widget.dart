@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi/app/core/themes/colors.dart';
-import 'package:taxi/driver/domain/providers/login_provider.dart';
+import 'package:taxi/driver/presentation/blocs/auth/auth_bloc.dart';
 
 class NumberWidget extends StatefulWidget {
   const NumberWidget({super.key});
@@ -29,7 +29,6 @@ class _NumberWidgetState extends State<NumberWidget> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final loginProvider = Provider.of<LoginProvider>(context);
     
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
@@ -99,16 +98,47 @@ class _NumberWidgetState extends State<NumberWidget> {
           ),
           SizedBox(height: size.height * .05),
 
-          OutlinedButton(
-            style:OutlinedButton.styleFrom(
-              backgroundColor: TaxiColors.purple,
-              padding: const EdgeInsets.symmetric(horizontal: 130, vertical: 15),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              )
-            ),
-            onPressed: () => loginProvider.stepSelected = loginProvider.stepSelected + 1, 
-            child: const Text("Enviar Codigo", style: TextStyle(color: TaxiColors.white))
+          BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+
+              if(state is PhoneVerifying){
+
+                return OutlinedButton(
+                  style:OutlinedButton.styleFrom(
+                    backgroundColor: TaxiColors.purple,
+                    padding: const EdgeInsets.symmetric(horizontal: 130, vertical: 15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    )
+                  ),
+                  onPressed: null,
+                  child: const Center(child: CircularProgressIndicator())
+               
+                );
+              }
+
+              return OutlinedButton(
+                style:OutlinedButton.styleFrom(
+                  backgroundColor: TaxiColors.purple,
+                  padding: const EdgeInsets.symmetric(horizontal: 130, vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  )
+                ),
+                onPressed: () {
+    
+                  if( numberController.text.trim() == "" ){
+                    return;
+                  }else{
+                    BlocProvider.of<AuthBloc>(context).add(VerifyPhoneNumberEvent(numberController.text));
+                  }
+    
+                },
+                // child: Center(child: CircularProgressIndicator())
+                child: const Text("Enviar Codigo", style: TextStyle(color: TaxiColors.white))
+              
+              );
+            },
           ),
       
         ],

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:taxi/app/core/themes/colors.dart';
-import 'package:taxi/driver/domain/providers/login_provider.dart';
 import 'package:taxi/driver/presentation/screens/login/widgets/widgets.dart';
 
 class UpdateDocumentWidget extends StatefulWidget {
@@ -15,7 +13,6 @@ class _UpdateDocumentWidgetState extends State<UpdateDocumentWidget> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final loginProvider = Provider.of<LoginProvider>(context);
 
     return SingleChildScrollView(
       child: Padding(
@@ -47,7 +44,7 @@ class _UpdateDocumentWidgetState extends State<UpdateDocumentWidget> {
                   borderRadius: BorderRadius.circular(10),
                 )
               ),
-              onPressed: ()=> loginProvider.stepSelected = 0, 
+              onPressed: (){}, 
               child: const Text("Confirmar y Continuar", style: TextStyle(color: TaxiColors.white))
             ),
       

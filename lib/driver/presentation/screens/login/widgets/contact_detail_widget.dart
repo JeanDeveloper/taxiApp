@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:taxi/app/core/constants/constants.dart';
 import 'package:taxi/app/core/themes/colors.dart';
 import 'package:taxi/app/domain/entities/gender.dart';
-import 'package:taxi/driver/domain/providers/login_provider.dart';
 import 'package:taxi/driver/presentation/screens/login/widgets/widgets.dart';
 
 class ContactDetailWidget extends StatefulWidget {
@@ -32,7 +30,6 @@ class _ContactDetailWidgetState extends State<ContactDetailWidget> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final loginProvider = Provider.of<LoginProvider>(context);
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric( horizontal: 20),
@@ -113,7 +110,7 @@ class _ContactDetailWidgetState extends State<ContactDetailWidget> {
                   borderRadius: BorderRadius.circular(10),
                 )
               ),
-              onPressed: ()=> loginProvider.stepSelected = loginProvider.stepSelected + 1, 
+              onPressed: () {}, 
               child: const Text("Continuar", style: TextStyle(color: TaxiColors.white))
             ),
         

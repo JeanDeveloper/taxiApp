@@ -18,7 +18,7 @@ class WelcomeScreen extends StatelessWidget {
               top: 50,
               left: 5,
               child: BackButton(
-                color: TaxiColors.dark,
+                color:TaxiColors.dark
               ),
             ),
             Positioned( bottom: size.height * .25, left: size.width * .4, child: const Text("¡Bienvenido!", style: TextStyle(fontWeight: FontWeight.bold))),
@@ -33,16 +33,15 @@ class WelcomeScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   )
                 ),
-                onPressed: () => Navigator.push(
+                onPressed:() => Navigator.push(
                   context, 
                   MaterialPageRoute(
-                    builder: (context) => const LoginScreen(),
+                    builder: (context) => const LoginScreenInit(),
                   )
                 ), 
                 child: const Text("Iniciar Sesión ", style: TextStyle(color: TaxiColors.white))
               ),
             ),
-     
           ],
         ),
       ),

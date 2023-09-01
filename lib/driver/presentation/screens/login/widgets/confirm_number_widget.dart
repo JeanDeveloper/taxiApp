@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 import 'package:taxi/app/core/themes/colors.dart';
-import 'package:taxi/driver/domain/providers/login_provider.dart';
 import 'package:taxi/driver/presentation/helpers/input_decoration.dart';
 
 class ConfirmNumberWidget extends StatelessWidget {
@@ -12,8 +10,6 @@ class ConfirmNumberWidget extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final size = MediaQuery.of(context).size;
-    final loginProvider = Provider.of<LoginProvider>(context);
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
       child: Column(        
@@ -264,6 +260,7 @@ class ConfirmNumberWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
 
             children: [
+
               OutlinedButton(
                 style:OutlinedButton.styleFrom(
                   backgroundColor: TaxiColors.white,
@@ -272,15 +269,15 @@ class ConfirmNumberWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   )
                 ),
-                onPressed: ()=> Navigator.push(
-                  context, 
-                  MaterialPageRoute(
-                    builder: (context) => Container(),
-                  )
-                ), 
+                // onPressed: ()=> Navigator.push(
+                //   context, 
+                //   MaterialPageRoute(
+                //     builder: (context) => Container(),
+                //   )
+                // ), 
+                onPressed: (){},
                 child: const Text("Reenviar Codigo", style: TextStyle(color: Colors.grey))
               ),
-
 
               OutlinedButton(
                 style:OutlinedButton.styleFrom(
@@ -290,63 +287,9 @@ class ConfirmNumberWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   )
                 ),
-                onPressed: ()=> loginProvider.stepSelected = loginProvider.stepSelected + 1, 
+                onPressed: (){}, 
                 child: const Text("Continuar", style: TextStyle(color: TaxiColors.white))
               ),
-
-
-
-              // ButtonWidget(
-
-              //   padding:EdgeInsets.symmetric(horizontal:size.width * .08, vertical:size.height * .018),
-              //   child: const Text('Reenviar codigo', style:  TextStyle(color: Colors.white)),
-
-              //   onpressed: (){
-
-              //     print('se vuelve a enviar el codigo de autenticacion despues de los segundos puestos');
-              //     // print(verificationProvider.codigo);
-              //   },
-                
-              // ),
-
-              // ButtonWidget(
-
-              //   padding: EdgeInsets.symmetric(horizontal:size.width * .08, vertical:size.height * .018),
-              //   child:  const Text('Verificar', style:  TextStyle(color: Colors.white)),
-
-              //   onpressed: ()async{
-
-              //     // loginProvider.changeState(AuthStatus.Authenticanting);
-
-              //     print('aqui se debe validar si el codigo que se envio es el mismo con el que inserto el usuario por  el teclado');
-              //     // print(verificationProvider.codigo);
-
-              //     // PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(verificationId: loginProvider.verificationId, smsCode: verificationProvider.codigo);
-
-              //     // loginProvider.changeState(AuthStatus.Authenticanting);
-
-              //     await Future.delayed(const Duration(seconds: 4));
-
-              //     // try { 
-
-              //       // final authCredential = await loginProvider.auth.signInWithCredential(phoneAuthCredential);
-
-              //       // if(authCredential.user != null){
-              //       //   // loginProvider.changeState(AuthStatus.Authenticated);
-              //       // }
-
-              //     // } on FirebaseAuthException catch (e) {
-
-              //     //   loginProvider.changeState(AuthStatus.Unauthenticated);
-              //     //   // ignore: use_build_context_synchronously
-              //     //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.code)));
-
-              //     // }
-                
-
-              //   },
-
-              // ),
 
             ],
           

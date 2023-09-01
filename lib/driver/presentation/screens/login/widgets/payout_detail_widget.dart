@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:taxi/app/core/themes/colors.dart';
-import 'package:taxi/driver/domain/providers/login_provider.dart';
 import 'package:taxi/driver/presentation/screens/login/widgets/widgets.dart';
 
 class PayoutDetailWidget extends StatefulWidget {
@@ -30,7 +28,6 @@ class _PayoutDetailWidgetState extends State<PayoutDetailWidget> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final loginProvider = Provider.of<LoginProvider>(context);
     
     return Padding(
       padding: const EdgeInsets.symmetric( horizontal: 20),
@@ -92,7 +89,7 @@ class _PayoutDetailWidgetState extends State<PayoutDetailWidget> {
                   borderRadius: BorderRadius.circular(10),
                 )
               ),
-              onPressed: ()=>loginProvider.stepSelected = loginProvider.stepSelected + 1, 
+              onPressed: (){}, 
               child: const Text("Continuar", style: TextStyle(color: TaxiColors.white))
             ),
 

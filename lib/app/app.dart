@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:taxi/app/presentation/screens/carousel/carousel_screen.dart';
-// import 'package:taxi/customer/presentation/screens/login/login_screen.dart';
+// import 'package:taxi/app/presentation/screens/carousel/carousel_screen.dart';
+import 'package:taxi/customer/presentation/screens/login/login_screen.dart';
 
-class TaxiApp extends StatelessWidget { 
+class TaxiApp extends StatelessWidget {
 
   const TaxiApp({super.key});
 
@@ -17,7 +17,7 @@ class TaxiApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const CarouselScreen(),
+      home: const LoginScreen(),
 
     );
 

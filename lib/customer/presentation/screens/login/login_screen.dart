@@ -15,10 +15,10 @@ class LoginScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
+
             SizedBox(
               width: double.infinity,
               height: size.height * .05,
-
               child: NumberStepper(
                 enableStepTapping: false,
                 steppingEnabled: false,
@@ -30,7 +30,6 @@ class LoginScreen extends StatelessWidget {
                 activeStep: 0,
                 onStepReached: (index) => print(index)
               ),
-              
             ),
             const NumberWidget()       
 
