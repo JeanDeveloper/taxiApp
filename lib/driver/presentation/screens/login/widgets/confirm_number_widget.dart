@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi/app/core/themes/colors.dart';
+import 'package:taxi/driver/presentation/blocs/auth/auth_bloc.dart';
 import 'package:taxi/driver/presentation/helpers/input_decoration.dart';
 
-class ConfirmNumberWidget extends StatelessWidget {
-  const ConfirmNumberWidget({super.key});
+class ConfirmNumberWidget extends StatefulWidget {
+  
+
+  const ConfirmNumberWidget({
+    super.key, 
+  });
+
+  @override
+  State<ConfirmNumberWidget> createState() => _ConfirmNumberWidgetState();
+}
+
+class _ConfirmNumberWidgetState extends State<ConfirmNumberWidget> {
+  String codeNumber = "";
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +30,7 @@ class ConfirmNumberWidget extends StatelessWidget {
         children: [
       
           const Text("Codigo de verificacion", style: TextStyle(fontWeight: FontWeight.bold)),
-          RichText(     
+          RichText(
             text:const TextSpan(              
               children: [
                 TextSpan(
@@ -33,8 +46,7 @@ class ConfirmNumberWidget extends StatelessWidget {
           ), 
 
           //OTP WIDGET
-
-          SizedBox(height: size.height*0.03),
+          SizedBox(height: size.height * .03),
 
           Form(
             
@@ -54,11 +66,11 @@ class ConfirmNumberWidget extends StatelessWidget {
                     onChanged: (value){
 
                       if(value.length ==1){
-                        // verificationProvider.codigo += value;
+                        codeNumber += value;
                         FocusScope.of(context).nextFocus();
                       }
                       if(value.isEmpty){
-                        // verificationProvider.codigo = '';
+                        codeNumber = '';
                         FocusScope.of(context).previousFocus();
                       }
                       
@@ -87,14 +99,15 @@ class ConfirmNumberWidget extends StatelessWidget {
                     onChanged: (value){
 
                       if(value.length == 1){
-                        // verificationProvider.codigo += value;
+                        codeNumber += value;
                         FocusScope.of(context).nextFocus();
                       }
 
                       if(value.isEmpty){
-                        // verificationProvider.codigo = verificationProvider.codigo.substring(0, verificationProvider.codigo.length-1);
+                        codeNumber = codeNumber.substring(0, codeNumber.length-1);
                         FocusScope.of(context).previousFocus();
                       }
+
                     },
 
                     keyboardType: TextInputType.number,
@@ -120,13 +133,12 @@ class ConfirmNumberWidget extends StatelessWidget {
 
                     onChanged: (value){
                       if(value.length ==1){
-                        // verificationProvider.codigo += value;
+                        codeNumber += value;
                         FocusScope.of(context).nextFocus();
                       }
 
                       if(value.isEmpty){
-                        // verificationProvider.codigo = verificationProvider.codigo.substring(0, verificationProvider.codigo.length-1);
-
+                        codeNumber = codeNumber.substring(0, codeNumber.length-1);
                         FocusScope.of(context).previousFocus();
                       }
 
@@ -156,11 +168,11 @@ class ConfirmNumberWidget extends StatelessWidget {
                     onChanged: (value){
                       
                       if(value.length == 1){
-                        // verificationProvider.codigo += value;
+                        codeNumber += value;
                         FocusScope.of(context).nextFocus();
                       }
                       if(value.isEmpty){
-                        // verificationProvider.codigo = verificationProvider.codigo.substring(0, verificationProvider.codigo.length-1);
+                        codeNumber = codeNumber.substring(0, codeNumber.length-1);
                         FocusScope.of(context).previousFocus();
                       }
                     },
@@ -189,11 +201,11 @@ class ConfirmNumberWidget extends StatelessWidget {
                     onChanged: (value){
                       
                       if(value.length == 1){
-                        // verificationProvider.codigo += value;
+                        codeNumber += value;
                         FocusScope.of(context).nextFocus();
                       }
                       if(value.isEmpty){
-                        // verificationProvider.codigo = verificationProvider.codigo.substring(0, verificationProvider.codigo.length-1);
+                        codeNumber = codeNumber.substring(0, codeNumber.length-1);
 
                         FocusScope.of(context).previousFocus();
                       }
@@ -223,11 +235,11 @@ class ConfirmNumberWidget extends StatelessWidget {
                     onChanged: (value){
                       
                       if(value.length == 1){
-                        // verificationProvider.codigo += value;
+                        codeNumber += value;
                         FocusScope.of(context).nextFocus();
                       }
                       if(value.isEmpty){
-                        // verificationProvider.codigo = verificationProvider.codigo.substring(0, verificationProvider.codigo.length-1);
+                        codeNumber = codeNumber.substring(0, codeNumber.length-1);
 
                         FocusScope.of(context).previousFocus();
                       }
@@ -269,12 +281,6 @@ class ConfirmNumberWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   )
                 ),
-                // onPressed: ()=> Navigator.push(
-                //   context, 
-                //   MaterialPageRoute(
-                //     builder: (context) => Container(),
-                //   )
-                // ), 
                 onPressed: (){},
                 child: const Text("Reenviar Codigo", style: TextStyle(color: Colors.grey))
               ),
@@ -287,7 +293,14 @@ class ConfirmNumberWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   )
                 ),
-                onPressed: (){}, 
+                onPressed: (){
+                  if( codeNumber.trim() == "" ){
+                    return;
+                  }else{
+                    BlocProvider.of<AuthBloc>(context).add(ConfirmVerificationCode(codeNumber));
+                  }
+
+                } ,
                 child: const Text("Continuar", style: TextStyle(color: TaxiColors.white))
               ),
 

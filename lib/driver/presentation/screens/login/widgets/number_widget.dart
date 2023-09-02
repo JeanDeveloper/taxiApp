@@ -102,7 +102,6 @@ class _NumberWidgetState extends State<NumberWidget> {
             builder: (context, state) {
 
               if(state is PhoneVerifying){
-
                 return OutlinedButton(
                   style:OutlinedButton.styleFrom(
                     backgroundColor: TaxiColors.purple,
@@ -113,7 +112,6 @@ class _NumberWidgetState extends State<NumberWidget> {
                   ),
                   onPressed: null,
                   child: const Center(child: CircularProgressIndicator())
-               
                 );
               }
 
@@ -126,15 +124,12 @@ class _NumberWidgetState extends State<NumberWidget> {
                   )
                 ),
                 onPressed: () {
-    
                   if( numberController.text.trim() == "" ){
                     return;
                   }else{
                     BlocProvider.of<AuthBloc>(context).add(VerifyPhoneNumberEvent(numberController.text));
                   }
-    
                 },
-                // child: Center(child: CircularProgressIndicator())
                 child: const Text("Enviar Codigo", style: TextStyle(color: TaxiColors.white))
               
               );

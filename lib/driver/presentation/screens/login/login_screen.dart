@@ -39,9 +39,9 @@ class LoginScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-        
+                
             children: [
-        
+                
               SizedBox(
                 width: double.infinity,
                 height: size.height * .05,
@@ -61,29 +61,36 @@ class LoginScreen extends StatelessWidget {
 
               BlocBuilder<AuthBloc, AuthState>(
                 builder: ( _ , state) {
-
+          
                   if(state is AuthInitial) {
                     return const NumberWidget();
                   }
-
-                  if(state is PhoneVerifying) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-
+          
+                  // if(state is PhoneVerifying) {
+                  //   return Container( width: double.infinity, height: size.height * .95, child:const Center(child: CircularProgressIndicator()));
+                  // }
+          
                   if(state is PhoneVerified) {
                     return const ConfirmNumberWidget();
                   }
-
-                  if(state is AuthLoading) {
-                    return const Center(child: CircularProgressIndicator());
+          
+                  // if(state is PhoneConfirming) {
+                  //   return Container( width: double.infinity, height: size.height * .95, child:const Center(child: CircularProgressIndicator()));
+                  // }
+          
+                  if(state is PhoneConfirmed) {
+                    return const ContactDetailWidget();
                   }
-                  return Container();
+          
+                  // if(state is AuthLoading) {
+                  //   return Container( width: double.infinity, height: size.height * .95, child:const Center(child: CircularProgressIndicator()));
+                  // }
 
-                  // return const Center(child: CircularProgressIndicator());
-
+                  return SizedBox( width: double.infinity, height: size.height * .95, child:const Center(child: CircularProgressIndicator()));
+          
                 },
               ),
-
+          
               // const NumberWidget()
               // const ConfirmNumberWidget()
               // const ContactDetailWidget(),

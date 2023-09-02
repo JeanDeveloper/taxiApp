@@ -11,7 +11,7 @@ class FirebaseAuthRepository extends IAuthRepository{
   @override
   Future<void> verifyPhoneNumber(String phoneNumber) async  {
     
-    final loginResponse = await authDataSource.verifyPhoneNumber(phoneNumber);
+    await authDataSource.verifyPhoneNumber(phoneNumber);
 
     // on AuthException catch(auth){
     //   return Left(AuthFailure(message: auth.message ));

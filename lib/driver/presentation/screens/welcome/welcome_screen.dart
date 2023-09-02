@@ -36,8 +36,8 @@ class WelcomeScreen extends StatelessWidget {
                 onPressed:() => Navigator.push(
                   context, 
                   MaterialPageRoute(
-                    builder: (context) => const LoginScreenInit(),
-                  )
+                    builder: (context) => const LoginScreenInit()
+                  ),
                 ), 
                 child: const Text("Iniciar Sesión ", style: TextStyle(color: TaxiColors.white))
               ),
@@ -66,7 +66,6 @@ class ContainerImage extends StatelessWidget {
       child: SvgPicture.asset(
         "assets/svg/login-driver.svg",
       ),
-
     );
   }
 }
