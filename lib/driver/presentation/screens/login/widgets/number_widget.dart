@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi/app/core/themes/colors.dart';
+import 'package:taxi/app/presentation/widgets/custom_button.dart';
 import 'package:taxi/driver/presentation/blocs/auth/auth_bloc.dart';
 
 class NumberWidget extends StatefulWidget {
@@ -101,38 +102,29 @@ class _NumberWidgetState extends State<NumberWidget> {
           BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
 
-              if(state is PhoneVerifying){
-                return OutlinedButton(
-                  style:OutlinedButton.styleFrom(
-                    backgroundColor: TaxiColors.purple,
-                    padding: const EdgeInsets.symmetric(horizontal: 130, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    )
-                  ),
-                  onPressed: null,
-                  child: const Center(child: CircularProgressIndicator())
-                );
-              }
+              if(state is SendingOTPState){
 
-              return OutlinedButton(
-                style:OutlinedButton.styleFrom(
-                  backgroundColor: TaxiColors.purple,
-                  padding: const EdgeInsets.symmetric(horizontal: 130, vertical: 15),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  )
+                return CustomButtonWidget(
+                  width: size.width,
+                  child: const Center(child: CircularProgressIndicator()),
+                );
+
+              }
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: size.width * .05),
+                child: CustomButtonWidget(
+                  width: size.width,
+                  child: const Text("Enviar Codigo", style: TextStyle(color: TaxiColors.white)),
+                  onPressed: () {
+                    if( numberController.text.trim() == "" ){
+                      return;
+                    }else{
+                      BlocProvider.of<AuthBloc>(context).add(SendOTPEvent(numberController.text));
+                    }
+                  },
                 ),
-                onPressed: () {
-                  if( numberController.text.trim() == "" ){
-                    return;
-                  }else{
-                    BlocProvider.of<AuthBloc>(context).add(VerifyPhoneNumberEvent(numberController.text));
-                  }
-                },
-                child: const Text("Enviar Codigo", style: TextStyle(color: TaxiColors.white))
-              
               );
+
             },
           ),
       

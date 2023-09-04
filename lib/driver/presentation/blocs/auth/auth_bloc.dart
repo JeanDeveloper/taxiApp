@@ -1,78 +1,50 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:taxi/driver/domain/usescase/verify_number.dart';
-import 'package:taxi/driver/domain/usescase/verify_otp.dart';
+import 'package:taxi/driver/domain/usescase/sending_otp.dart';
+import 'package:taxi/driver/domain/usescase/verifing_otp.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
-  // fincal VerifyNumber verifyNumber;
-  final VerifyOTP verifyOTP;
+  final SendingOTP sendingOTP;
+  final VerifingOTP verifyingOTP;
+  
   int stepSelected = 0;
+  String? verification;
+  String phone="";
 
-  AuthBloc(this.verifyOTP) : super(AuthInitial()) {
+  AuthBloc(this.sendingOTP, this.verifyingOTP) : super(AuthInitial()) {
     on<AuthEvent>((event, emit) async {
-      final firebaseAuth = FirebaseAuth.instance;
-      if( event is VerifyPhoneNumberEvent ) {
+      if( event is SendOTPEvent ) {
         print(event.phoneNumber);
-        emit(PhoneVerifying());
-        //IRA EL METODO PARA EL ESTABILIZADOR 
-        // await verifyNumber(event.phoneNumber);
-
-        await verifyOTP(
-
+        emit(SendingOTPState());
+        await sendingOTP(
           event.phoneNumber,
-
-          (PhoneAuthCredential credential) async {
-            // ANDROID ONLY!
-            // Sign the user in (or link) with the auto-generated credential
-            print("verificacion completada");
-            await firebaseAuth.signInWithCredential(credential);
-
-          },
-
-          (FirebaseAuthException e){
-            if(e.code == 'invalid-phone-number'){
-              print("Numero incorrecto ${e.message}");
-            }
-            print("codigo del fallo: ${e.message}");
-          },
-
+          (PhoneAuthCredential phoneAuthCredential) async {},
+          (FirebaseAuthException e) async {},
           (String verificationId, int? resendToken) async {
-            stepSelected = stepSelected + 1;
-            emit(PhoneVerified());
-            print("Se envio el codigo exitosamente");
-            // Update the UI - wait for the user to enter the SMS code
-            String smsCode = '123456';
-
-            // Create a PhoneAuthCredential with the code
-            PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
-
-              // Sign the user in (or link) with the credential
-            await firebaseAuth.signInWithCredential(credential);
-
+            verification = verificationId;
+            print(verification);       
           },
           (String verificationId){
             print(verificationId);
           },
-        
-
         );
-
+        phone = event.phoneNumber;
+        stepSelected = stepSelected + 1;
+        emit(SendedOTPState());
       }
 
-
-      // if( event is VerifyPhoneNumberEvent ) {
-      //   print(event.phoneNumber);
-      //   emit(PhoneVerifying());
-      //   //IRA EL METODO PARA EL ESTABILIZADOR 
-      //   await verifyNumber(event.phoneNumber);
-      //   stepSelected = stepSelected + 1;
-      //   emit(PhoneVerified());
-      // }
+      if( event is VerifyOTPEvent ) {
+        print(event.codeNumber);
+        emit(VerifyingOTPState());
+        await verifyingOTP(event.codeNumber, verification??'');
+        stepSelected = stepSelected + 1;
+        emit(VerifiedOTPState());
+      }
 
       // if( event is ConfirmVerificationCode ) {
       //   print(event.codeNumber);

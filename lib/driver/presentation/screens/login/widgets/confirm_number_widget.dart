@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi/app/core/themes/colors.dart';
+import 'package:taxi/app/presentation/widgets/widgets.dart';
 import 'package:taxi/driver/presentation/blocs/auth/auth_bloc.dart';
 import 'package:taxi/driver/presentation/helpers/input_decoration.dart';
 
@@ -23,6 +24,7 @@ class _ConfirmNumberWidgetState extends State<ConfirmNumberWidget> {
   Widget build(BuildContext context) {
 
     final size = MediaQuery.of(context).size;
+    final authBloc = BlocProvider.of<AuthBloc>(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
       child: Column(        
@@ -31,21 +33,21 @@ class _ConfirmNumberWidgetState extends State<ConfirmNumberWidget> {
       
           const Text("Codigo de verificacion", style: TextStyle(fontWeight: FontWeight.bold)),
           RichText(
-            text:const TextSpan(              
+            text:TextSpan(              
               children: [
-                TextSpan(
+                const TextSpan(
                   text: "Enviamos un codigo de verificacion a 9*****",
                   style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.w700),
                 ),
                 TextSpan(
-                  text: "611",
-                  style: TextStyle(color: TaxiColors.dark, fontSize: 14, fontWeight: FontWeight.w700),
+                  text: authBloc.phone.substring(6),
+                  style: const TextStyle(color: TaxiColors.dark, fontSize: 14, fontWeight: FontWeight.w700),
                 )
               ]
             )
           ), 
 
-          //OTP WIDGET
+
           SizedBox(height: size.height * .03),
 
           Form(
@@ -273,35 +275,22 @@ class _ConfirmNumberWidgetState extends State<ConfirmNumberWidget> {
 
             children: [
 
-              OutlinedButton(
-                style:OutlinedButton.styleFrom(
-                  backgroundColor: TaxiColors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  )
-                ),
-                onPressed: (){},
-                child: const Text("Reenviar Codigo", style: TextStyle(color: Colors.grey))
+              CustomButtonWidget(
+                width: size.width * .4,
+                child: const Text("Reenviar", style: TextStyle(color: TaxiColors.white)),
               ),
 
-              OutlinedButton(
-                style:OutlinedButton.styleFrom(
-                  backgroundColor: TaxiColors.purple,
-                  padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 15),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  )
-                ),
+              CustomButtonWidget(
+                width: size.width * .4,
+                child: const Text("Verificar", style: TextStyle(color: TaxiColors.white)),
                 onPressed: (){
                   if( codeNumber.trim() == "" ){
                     return;
                   }else{
-                    BlocProvider.of<AuthBloc>(context).add(ConfirmVerificationCode(codeNumber));
+                    BlocProvider.of<AuthBloc>(context).add(VerifyOTPEvent(codeNumber));
                   }
 
-                } ,
-                child: const Text("Continuar", style: TextStyle(color: TaxiColors.white))
+                },
               ),
 
             ],

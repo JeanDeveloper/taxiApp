@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:taxi/app/core/themes/colors.dart';
+import 'package:taxi/app/presentation/widgets/custom_button.dart';
 import 'package:taxi/driver/presentation/screens/screens.dart';
 
 class NumberWidget extends StatefulWidget {
@@ -63,7 +64,6 @@ class _NumberWidgetState extends State<NumberWidget> {
               enableSuggestions: false,
               controller: numberController,
               decoration: InputDecoration(
-                
                 filled: true,
                 fillColor: TaxiColors.lightGrey,
                 counterText: '',
@@ -72,11 +72,9 @@ class _NumberWidgetState extends State<NumberWidget> {
                   fontSize: 15,
                   color: TaxiColors.grey
                 ),
-    
                 errorStyle: const TextStyle(
                   fontSize: 15
                 ),
-    
                 errorBorder:  OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: const BorderSide(
@@ -84,7 +82,6 @@ class _NumberWidgetState extends State<NumberWidget> {
                     width: 2.0,
                   ),
                 ),
-    
                 focusedErrorBorder:  OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: const BorderSide(
@@ -92,7 +89,6 @@ class _NumberWidgetState extends State<NumberWidget> {
                     width: 2.0,
                   ),
                 ),
-    
                 enabledBorder:  OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: const BorderSide(
@@ -100,7 +96,6 @@ class _NumberWidgetState extends State<NumberWidget> {
                     width: 2.0,
                   ),
                 ),
-    
                 focusedBorder:  OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: const BorderSide(
@@ -108,7 +103,6 @@ class _NumberWidgetState extends State<NumberWidget> {
                     width: 2.0,
                   ),
                 ),
-    
                 disabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.zero,
                   borderSide: BorderSide(
@@ -116,38 +110,32 @@ class _NumberWidgetState extends State<NumberWidget> {
                     width: 1.0,
                   ),
                 ),
-    
               ),
             ),
           ),
     
+          TextButton(
+            onPressed: () => Navigator.push(
+              context, 
+              MaterialPageRoute(
+                builder: (context) => const WelcomeScreen(),
+              )
+            ), 
+            child: const Text(
+              "¿Eres Conductor?",
+              textAlign: TextAlign.end,
+            ),
+          ),
+
           Expanded(
-            child: InkWell(
-              onTap: () => Navigator.push(
-                context, 
-                MaterialPageRoute(
-                  builder: (context) => const WelcomeScreen(),
-                )
+            child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: size.width * .05),              child: CustomButtonWidget(
+                width: size.width,
+                child: const Text("Enviar Codigo", style: TextStyle(color: TaxiColors.white)),
               ),
-              child: const Text(
-                "¿Eres conductor?", 
-                textAlign: TextAlign.end
-              )
-            )
-          ),
-    
-          OutlinedButton(
-            style:OutlinedButton.styleFrom(
-              backgroundColor: TaxiColors.purple,
-              padding: const EdgeInsets.symmetric(horizontal: 140, vertical: 15),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              )
             ),
-            onPressed: (){}, 
-            child: const Text("Enviar Codigo", style: TextStyle(color: TaxiColors.white))
-          )
-    
+          ),
+
         ],
       ),
     );

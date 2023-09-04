@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:taxi/app/core/constants/constants.dart';
 import 'package:taxi/app/core/themes/colors.dart';
 import 'package:taxi/app/domain/entities/gender.dart';
+import 'package:taxi/app/presentation/widgets/widgets.dart';
 import 'package:taxi/driver/presentation/screens/login/widgets/widgets.dart';
 
 class ContactDetailWidget extends StatefulWidget {
@@ -38,10 +39,9 @@ class _ContactDetailWidgetState extends State<ContactDetailWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
         
-            SizedBox(height:  size.height * .02),
+            SizedBox(height:  size.height * .03),
             const Text("Ingresa tu informacion Personal", style: TextStyle(fontWeight: FontWeight.bold)),
-        
-            SizedBox(height:  size.height * .02),
+            SizedBox(height:  size.height * .03),
             
             Container(
               width: size.width * .5,
@@ -54,7 +54,7 @@ class _ContactDetailWidgetState extends State<ContactDetailWidget> {
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<Gender>(
                   isExpanded: true,
-                  hint: const Text("Seleccione el genero"),
+                  hint: const Text("Genero"),
                   items: Constants.genders.map(
                     (gender) => DropdownMenuItem(
                       value: gender,
@@ -67,6 +67,7 @@ class _ContactDetailWidgetState extends State<ContactDetailWidget> {
             ),
         
             SizedBox(height:  size.height * .02),
+
             CustomTextInput(
               hinttext: "Nombres",
               controller: name,
@@ -74,6 +75,7 @@ class _ContactDetailWidgetState extends State<ContactDetailWidget> {
             ),
         
             SizedBox(height:  size.height * .02),
+
             CustomTextInput(
               hinttext: "Apellidos",
               controller: surname,
@@ -81,6 +83,7 @@ class _ContactDetailWidgetState extends State<ContactDetailWidget> {
             ),
         
             SizedBox(height:  size.height * .02),
+
             CustomTextInput(
               hinttext: "Documento de Identidad",
               controller: document,
@@ -88,6 +91,7 @@ class _ContactDetailWidgetState extends State<ContactDetailWidget> {
             ),
         
             SizedBox(height:  size.height * .02),
+
             CustomTextInput(
               hinttext: "Correo",
               controller: email,
@@ -95,25 +99,20 @@ class _ContactDetailWidgetState extends State<ContactDetailWidget> {
             ),
         
             SizedBox(height:  size.height * .02),
+
             CustomTextInput(
               hinttext: "Direccion",
               controller: address,
               keyboardType: TextInputType.streetAddress,
             ),
         
-            SizedBox(height: size.height * .05),
-            OutlinedButton(
-              style:OutlinedButton.styleFrom(
-                backgroundColor: TaxiColors.purple,
-                padding: const EdgeInsets.symmetric(horizontal: 150, vertical: 15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                )
-              ),
-              onPressed: () {}, 
-              child: const Text("Continuar", style: TextStyle(color: TaxiColors.white))
-            ),
-        
+            // SizedBox(height: size.height * .05),
+
+            CustomButtonWidget(
+              width: size.width,
+              child: const Text("Continuar", style: TextStyle(color: TaxiColors.white)),              
+            )
+       
           ],
         ),
       ),

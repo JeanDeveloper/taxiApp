@@ -8,13 +8,13 @@ sealed class AuthState extends Equatable {
 
 final class AuthInitial extends AuthState {}
 
-final class PhoneVerifying extends AuthState{}
+final class SendingOTPState extends AuthState{}
 
-final class PhoneVerified extends AuthState{}
+final class SendedOTPState extends AuthState{}
 
-final class PhoneConfirming extends AuthState{}
+final class VerifyingOTPState extends AuthState{}
 
-final class PhoneConfirmed extends AuthState{}
+final class VerifiedOTPState extends AuthState{}
 
 final class AuthLoading extends AuthState{}
 

@@ -25,7 +25,7 @@ class CustomTextInput extends StatelessWidget{
       controller: controller,
       textAlignVertical: TextAlignVertical.center,
       textAlign: TextAlign.left,
-      autocorrect: false,
+      autocorrect: true,
       keyboardType: keyboardType,
       decoration: InputDecoration(
         filled: true,

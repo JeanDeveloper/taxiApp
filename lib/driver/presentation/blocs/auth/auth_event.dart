@@ -6,14 +6,14 @@ sealed class AuthEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class VerifyPhoneNumberEvent extends AuthEvent{
+class SendOTPEvent extends AuthEvent{
   final String phoneNumber;
-  const VerifyPhoneNumberEvent(this.phoneNumber);
+  const SendOTPEvent(this.phoneNumber);
 }
 
-class ConfirmVerificationCode extends AuthEvent{
+class VerifyOTPEvent extends AuthEvent{
   final String codeNumber;
-  const ConfirmVerificationCode(this.codeNumber);
+  const VerifyOTPEvent(this.codeNumber);
 }
 
 class DoLoginEvent extends AuthEvent{}

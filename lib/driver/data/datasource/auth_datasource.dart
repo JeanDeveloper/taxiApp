@@ -2,25 +2,77 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class IAuthDataSource{
 
-  Future<void> verifyPhoneNumber(
+  // Future<String?> sendingOTP(String phone);
+
+  Future<void> sendingOTP(
     String phone, {
       required void Function(PhoneAuthCredential phone) onCompleted,
       required void Function(FirebaseAuthException exception) onFailed,
       required void Function(String a, int? b) onCodeSent,
-      required Function(String verificationId) onTimeout,
+      required void Function(String verificationId) onTimeout,
     }
   );
 
+  Future<void> verifyOTP(String codeNumber, String verification);
+
+  // Future<void> verifyPhoneNumber(
+  //   String phone, {
+  //     required void Function(PhoneAuthCredential phone) onCompleted,
+  //     required void Function(FirebaseAuthException exception) onFailed,
+  //     required void Function(String a, int? b) onCodeSent,
+  //     required Function(String verificationId) onTimeout,
+  //   }
+  // );
 
 
 }
 
 class FirebaseDataSource extends IAuthDataSource{
 
-  final _firebaseAuth = FirebaseAuth.instance;
+  final _auth = FirebaseAuth.instance;
+  
+  // @override
+  // Future<String?> sendingOTP(String phone) async {
+  //   String? verificationID;
+  //   await _auth.verifyPhoneNumber(
+  //     phoneNumber: "+51$phone",
+  //     verificationCompleted: (PhoneAuthCredential credential) async {
+  //       await _auth.signInWithCredential(credential);
+  //     }, 
+  //     verificationFailed: (FirebaseAuthException e ) async {
+  //       //LA AUTENTICACION FALLO EN ALGO
+  //     }, 
+  //     codeSent: (String verificationId, int? resendToken) async {
+  //       verificationID = verificationId;
+  //       print(verificationID);        
+  //     }, 
+  //     codeAutoRetrievalTimeout: (String verificationId ) {
+  //       print(verificationId);
+  //     }
+  //   );
+  //   await Future.delayed(Duration(seconds: 3));
+    
+  //   return verificationID; 
+  // }
   
   @override
-  Future<void> verifyPhoneNumber(
+  Future<void> verifyOTP(String codeNumber, String verification) async {
+
+    PhoneAuthCredential credential =  PhoneAuthProvider.credential(
+      verificationId: verification, 
+      smsCode: codeNumber
+    );
+
+    UserCredential user = await _auth.signInWithCredential(credential);
+
+    print(user.additionalUserInfo);
+    print(user.credential);
+    print(user.user!.uid);
+
+  }
+
+  @override
+  Future<void> sendingOTP(
     String phone, 
     {
       required void Function(PhoneAuthCredential p1) onCompleted, 
@@ -31,8 +83,8 @@ class FirebaseDataSource extends IAuthDataSource{
   ) async {
 
     try {
-      await _firebaseAuth.verifyPhoneNumber(
-        phoneNumber: phone,
+      await _auth.verifyPhoneNumber(
+        phoneNumber: "+51$phone",
         verificationCompleted: onCompleted,
         verificationFailed: onFailed,
         codeSent: onCodeSent,

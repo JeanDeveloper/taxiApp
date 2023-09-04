@@ -14,7 +14,7 @@ class LoginScreenInit extends StatelessWidget {
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => sl<AuthBloc>()),
+        // BlocProvider(create: (_) => sl<AuthBloc>()),
       ],
       child: const LoginScreen(),
     );
@@ -29,21 +29,17 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
     final stepSelected = BlocProvider.of<AuthBloc>(context).stepSelected;
-    // print(selected.stepSelected);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-                
+            crossAxisAlignment: CrossAxisAlignment.start,   
             children: [
-                
+              SizedBox(height: size.height * .03),
               SizedBox(
-                width: double.infinity,
                 height: size.height * .05,
                 child: NumberStepper(
                   enableStepTapping: false,
@@ -66,25 +62,13 @@ class LoginScreen extends StatelessWidget {
                     return const NumberWidget();
                   }
           
-                  // if(state is PhoneVerifying) {
-                  //   return Container( width: double.infinity, height: size.height * .95, child:const Center(child: CircularProgressIndicator()));
-                  // }
-          
-                  if(state is PhoneVerified) {
+                  if(state is SendedOTPState || state is SendingOTPState ) {
                     return const ConfirmNumberWidget();
                   }
           
-                  // if(state is PhoneConfirming) {
-                  //   return Container( width: double.infinity, height: size.height * .95, child:const Center(child: CircularProgressIndicator()));
-                  // }
-          
-                  if(state is PhoneConfirmed) {
+                  if(state is VerifiedOTPState || state is VerifyingOTPState) {
                     return const ContactDetailWidget();
                   }
-          
-                  // if(state is AuthLoading) {
-                  //   return Container( width: double.infinity, height: size.height * .95, child:const Center(child: CircularProgressIndicator()));
-                  // }
 
                   return SizedBox( width: double.infinity, height: size.height * .95, child:const Center(child: CircularProgressIndicator()));
           
@@ -97,7 +81,7 @@ class LoginScreen extends StatelessWidget {
               // const CarDetailWidget(),
               // const PayoutDetailWidget(),
               // const UpdateDocumentWidget(),
-            
+
             ],
           ),
         ),

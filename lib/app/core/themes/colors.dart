@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class TaxiColors{
+  static const primaryColor   = Color(0xFF00C54E);
+  static const yellow         = Color(0xFFF4AB04);
   static const red            =  Color(0xff780001);
   static const lightRed       =  Color(0xffF04141);
   static const blue           =  Color(0xff294466);
@@ -15,6 +17,7 @@ class TaxiColors{
   static const lightBlue      =  Color(0xff5C7499);
   static const verylightBlue  =  Color(0xFFD0E1FF);
   static const lightGreen     =  Color(0xff5cb85c);
+
 }
 
 final smartGradients = [
