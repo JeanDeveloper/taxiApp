@@ -5,8 +5,8 @@ class VerifyNumber{
   final IAuthRepository iAuthRepository;
   VerifyNumber(this.iAuthRepository);
 
-  Future<void> call(String phoneNumber) async {
-    return iAuthRepository.verifyPhoneNumber(phoneNumber);
-  }
+  // Future<void> call(String phoneNumber) async {
+  //   return iAuthRepository.verifyPhoneNumber(phoneNumber);
+  // }
 
 }

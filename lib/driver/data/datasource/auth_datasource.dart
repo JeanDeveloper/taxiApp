@@ -1,12 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class IAuthDataSource{
+
   Future<void> verifyPhoneNumber(
-    String phone,{
-      Function(PhoneVerificationCompleted) onCompleted,
-      Function(PhoneVerificationFailed) onFailed,
-      Function(PhoneCodeSent, String verificationId) onCodeSent,
-      Function(String verificationId) onTimeout,
+    String phone, {
+      required void Function(PhoneAuthCredential phone) onCompleted,
+      required void Function(FirebaseAuthException exception) onFailed,
+      required void Function(String a, int? b) onCodeSent,
+      required Function(String verificationId) onTimeout,
     }
   );
 
@@ -19,7 +20,33 @@ class FirebaseDataSource extends IAuthDataSource{
   final _firebaseAuth = FirebaseAuth.instance;
   
   @override
-  Future<void> verifyPhoneNumber( String phone ) async {
+  Future<void> verifyPhoneNumber(
+    String phone, 
+    {
+      required void Function(PhoneAuthCredential p1) onCompleted, 
+      required void Function(FirebaseAuthException p1) onFailed, 
+      required void Function(String p1, int? p2) onCodeSent, 
+      required void Function(String verificationId) onTimeout
+    }
+  ) async {
+
+    try {
+      await _firebaseAuth.verifyPhoneNumber(
+        phoneNumber: phone,
+        verificationCompleted: onCompleted,
+        verificationFailed: onFailed,
+        codeSent: onCodeSent,
+        codeAutoRetrievalTimeout: onTimeout,
+      );
+    } catch( e ) {
+      // Manejar errores aquí
+      print("Hubo una exception"); 
+    }
+
+  }
+
+  // @override
+  // Future<void> verifyPhoneNumber( String phone ) async {
 
     // await _firebaseAuth.verifyPhoneNumber(
     //   phoneNumber: "+51919476763",
@@ -35,7 +62,7 @@ class FirebaseDataSource extends IAuthDataSource{
     //     if(e.code == 'invalid-phone-number'){
     //       print("Numero incorrecto ${e.message}");
     //     }
-        
+
     //     print("codigo del fallo: ${e.message}");
     //   },
 
@@ -54,9 +81,9 @@ class FirebaseDataSource extends IAuthDataSource{
     //   codeAutoRetrievalTimeout: (String verificationId) {
     //     print(verificationId);
     //   },
-      
+
     // );
 
-  }
+  // }
   
 }
