@@ -1,4 +1,5 @@
 import 'package:taxi/app/data/datasource/local_storage_datasource.dart';
+import 'package:taxi/app/domain/entities/iuser.dart';
 import 'package:taxi/app/domain/repositories/ilocal_storage_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,23 +19,21 @@ class LocalStorageRepository extends ILocalStorageRepository{
   }
 
   @override
-  Future<bool> saveStateCarousel(bool state) async  {
+  Future<void> saveStateCarousel(bool state) async  { 
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setBool(_carouselState, state);
-    return true;
   }
-
-  @override
-  Future<String> getUser() {
-    // TODO: implement getUser
-    throw UnimplementedError();
-  }
-
 
   @override
   Future<bool> saveUser(String uid) {
     // TODO: implement saveToken
     throw UnimplementedError();
+  }
+
+  @override
+  Future<IUser?> getUser() async {
+    IUser? user = await localStorageDataSource.getUser();
+    return user;
   }
 
 }

@@ -2,8 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class IAuthDataSource{
 
-  // Future<String?> sendingOTP(String phone);
-
   Future<void> sendingOTP(
     String phone, {
       required void Function(PhoneAuthCredential phone) onCompleted,
@@ -15,45 +13,11 @@ abstract class IAuthDataSource{
 
   Future<void> verifyOTP(String codeNumber, String verification);
 
-  // Future<void> verifyPhoneNumber(
-  //   String phone, {
-  //     required void Function(PhoneAuthCredential phone) onCompleted,
-  //     required void Function(FirebaseAuthException exception) onFailed,
-  //     required void Function(String a, int? b) onCodeSent,
-  //     required Function(String verificationId) onTimeout,
-  //   }
-  // );
-
-
 }
 
 class FirebaseDataSource extends IAuthDataSource{
 
   final _auth = FirebaseAuth.instance;
-  
-  // @override
-  // Future<String?> sendingOTP(String phone) async {
-  //   String? verificationID;
-  //   await _auth.verifyPhoneNumber(
-  //     phoneNumber: "+51$phone",
-  //     verificationCompleted: (PhoneAuthCredential credential) async {
-  //       await _auth.signInWithCredential(credential);
-  //     }, 
-  //     verificationFailed: (FirebaseAuthException e ) async {
-  //       //LA AUTENTICACION FALLO EN ALGO
-  //     }, 
-  //     codeSent: (String verificationId, int? resendToken) async {
-  //       verificationID = verificationId;
-  //       print(verificationID);        
-  //     }, 
-  //     codeAutoRetrievalTimeout: (String verificationId ) {
-  //       print(verificationId);
-  //     }
-  //   );
-  //   await Future.delayed(Duration(seconds: 3));
-    
-  //   return verificationID; 
-  // }
   
   @override
   Future<void> verifyOTP(String codeNumber, String verification) async {
@@ -65,7 +29,7 @@ class FirebaseDataSource extends IAuthDataSource{
 
     UserCredential user = await _auth.signInWithCredential(credential);
 
-    print(user.additionalUserInfo);
+    print(user.additionalUserInfo!.isNewUser);
     print(user.credential);
     print(user.user!.uid);
 

@@ -17,6 +17,7 @@ class _ContactDetailWidgetState extends State<ContactDetailWidget> {
   late TextEditingController document;
   late TextEditingController email;
   late TextEditingController address;
+  Gender? _selectedGender;
 
   @override
   void initState() {
@@ -31,16 +32,19 @@ class _ContactDetailWidgetState extends State<ContactDetailWidget> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric( horizontal: 20),
+    return Padding(
+      padding: const EdgeInsets.symmetric( horizontal: 20),
+      child: SizedBox(
+        height: size.height * .85,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
         
             SizedBox(height:  size.height * .03),
+      
             const Text("Ingresa tu informacion Personal", style: TextStyle(fontWeight: FontWeight.bold)),
+            
             SizedBox(height:  size.height * .03),
             
             Container(
@@ -54,20 +58,28 @@ class _ContactDetailWidgetState extends State<ContactDetailWidget> {
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<Gender>(
                   isExpanded: true,
-                  hint: const Text("Genero"),
+                  hint: const Padding(
+                    padding: EdgeInsets.only(left: 15),
+                    child: Text("Genero"),
+                  ),
                   items: Constants.genders.map(
                     (gender) => DropdownMenuItem(
-                      value: gender,
+                      value: gender,  
                       child: Text(gender.gender)
-                    )
-                  ).toList(), 
-                  onChanged: (value) => print(value),
+                    ) 
+                  ).toList(),
+                  value: _selectedGender,
+                  onChanged: (value) {
+                    setState((){
+                      _selectedGender = value;
+                    });
+                  },
                 ),
               ),
             ),
         
             SizedBox(height:  size.height * .02),
-
+      
             CustomTextInput(
               hinttext: "Nombres",
               controller: name,
@@ -75,7 +87,7 @@ class _ContactDetailWidgetState extends State<ContactDetailWidget> {
             ),
         
             SizedBox(height:  size.height * .02),
-
+      
             CustomTextInput(
               hinttext: "Apellidos",
               controller: surname,
@@ -83,7 +95,7 @@ class _ContactDetailWidgetState extends State<ContactDetailWidget> {
             ),
         
             SizedBox(height:  size.height * .02),
-
+      
             CustomTextInput(
               hinttext: "Documento de Identidad",
               controller: document,
@@ -91,7 +103,7 @@ class _ContactDetailWidgetState extends State<ContactDetailWidget> {
             ),
         
             SizedBox(height:  size.height * .02),
-
+      
             CustomTextInput(
               hinttext: "Correo",
               controller: email,
@@ -99,7 +111,7 @@ class _ContactDetailWidgetState extends State<ContactDetailWidget> {
             ),
         
             SizedBox(height:  size.height * .02),
-
+      
             CustomTextInput(
               hinttext: "Direccion",
               controller: address,
@@ -108,11 +120,16 @@ class _ContactDetailWidgetState extends State<ContactDetailWidget> {
         
             // SizedBox(height: size.height * .05),
 
+            const Spacer(),
+      
             CustomButtonWidget(
               width: size.width,
               child: const Text("Continuar", style: TextStyle(color: TaxiColors.white)),              
+              onPressed: (){
+
+              },
             )
-       
+           
           ],
         ),
       ),

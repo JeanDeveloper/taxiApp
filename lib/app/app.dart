@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:taxi/app/presentation/blocs/auth/auth_bloc.dart';
 import 'presentation/screens/screens.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi/app/core/themes/colors.dart';
 import 'package:taxi/app/core/injections/injections.dart';
-import 'package:taxi/driver/presentation/blocs/auth/auth_bloc.dart';
 
 // import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:taxi/app/presentation/screens/carousel/carousel_screen.dart';
@@ -59,4 +59,5 @@ class TaxiApp extends StatelessWidget {
       home: const SplashScreen(),
     );
   }
+
 }

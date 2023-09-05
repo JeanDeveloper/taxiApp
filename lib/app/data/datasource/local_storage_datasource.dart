@@ -3,7 +3,7 @@ import 'package:taxi/app/domain/entities/driver.dart';
 import 'package:taxi/app/domain/entities/iuser.dart';
 
 abstract class ILocalStorageDataSource{
-  Future<IUser?> getUser(String userCode);
+  Future<IUser?> getUser();
 }
 
 class LocalStorageDataSource extends ILocalStorageDataSource{
@@ -11,7 +11,7 @@ class LocalStorageDataSource extends ILocalStorageDataSource{
   final _auth = FirebaseAuth.instance;
 
   @override
-  Future<IUser?> getUser(String userCode) async {
+  Future<IUser?> getUser() async {
 
     final User? user =  _auth.currentUser;
 

@@ -5,23 +5,26 @@ class CustomButtonWidget extends StatelessWidget {
 
   final Widget child;
   final double width;
+  // final double? height;
   final void Function()? onPressed ;
 
   const CustomButtonWidget({
     super.key, 
     this.onPressed, 
     required this.child, 
-    required this.width
+    required this.width,
+    // this.height
   });
 
   @override
   Widget build(BuildContext context) {
 
-    final size = MediaQuery.of(context).size;
+    // final size = MediaQuery.of(context).size;
 
     return Container(
       // padding: EdgeInsets.symmetric(horizontal: size.width * .05),
       width: width,
+      // height: height,
       child: ElevatedButton(
         style: const ButtonStyle(
           

@@ -7,20 +7,23 @@ class CustomTextInput extends StatelessWidget{
   final TextInputType keyboardType;
   final TextEditingController controller;
   final TextCapitalization? textCapitalization;
+  final int? maxLength;
   // Function(String)? onchanged;
   
   const CustomTextInput({
     super.key, 
     required this.hinttext, 
     required this.keyboardType, 
-    // this.onchanged, 
     required this.controller,
-    this.textCapitalization,
+    this.textCapitalization, 
+    this.maxLength,
+    // this.onchanged, 
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      maxLength: maxLength,
       textCapitalization: textCapitalization?? TextCapitalization.none,
       controller: controller,
       textAlignVertical: TextAlignVertical.center,

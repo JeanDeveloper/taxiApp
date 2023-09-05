@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi/app/core/themes/colors.dart';
+import 'package:taxi/app/presentation/blocs/auth/auth_bloc.dart';
 import 'package:taxi/app/presentation/widgets/widgets.dart';
-import 'package:taxi/driver/presentation/blocs/auth/auth_bloc.dart';
 import 'package:taxi/driver/presentation/helpers/input_decoration.dart';
 
 class ConfirmNumberWidget extends StatefulWidget {
@@ -40,7 +40,7 @@ class _ConfirmNumberWidgetState extends State<ConfirmNumberWidget> {
                   style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.w700),
                 ),
                 TextSpan(
-                  text: authBloc.phone.substring(6),
+                  text: (authBloc.phone.isEmpty) ? "" : authBloc.phone.substring(6),
                   style: const TextStyle(color: TaxiColors.dark, fontSize: 14, fontWeight: FontWeight.w700),
                 )
               ]

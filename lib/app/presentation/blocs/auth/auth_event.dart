@@ -16,6 +16,15 @@ class VerifyOTPEvent extends AuthEvent{
   const VerifyOTPEvent(this.codeNumber);
 }
 
+class StartValidation extends AuthEvent{}
+
 class DoLoginEvent extends AuthEvent{}
 
 class DoLogoutEvent extends AuthEvent{}
+
+class ChangeStateCarouselEvent extends AuthEvent{
+  final bool state;
+  const ChangeStateCarouselEvent(this.state);
+}
+
+

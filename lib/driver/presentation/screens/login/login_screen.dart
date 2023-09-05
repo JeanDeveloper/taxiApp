@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:im_stepper/stepper.dart';
-import 'package:taxi/app/core/injections/injections.dart';
 import 'package:taxi/app/core/themes/colors.dart';
-import 'package:taxi/driver/presentation/blocs/auth/auth_bloc.dart';
+import 'package:taxi/app/presentation/blocs/auth/auth_bloc.dart';
 import 'package:taxi/driver/presentation/screens/login/widgets/widgets.dart';
 
-class LoginScreenInit extends StatelessWidget {
-  const LoginScreenInit({super.key});
+// class LoginScreenInit extends StatelessWidget {
+//   const LoginScreenInit({super.key});
 
-  @override
-  Widget build(BuildContext context) {
+//   @override
+//   Widget build(BuildContext context) {
 
-    return MultiBlocProvider(
-      providers: [
-        // BlocProvider(create: (_) => sl<AuthBloc>()),
-      ],
-      child: const LoginScreen(),
-    );
+//     return MultiBlocProvider(
+//       providers: [
+//         // BlocProvider(create: (_) => sl<AuthBloc>()),
+//       ],
+//       child: const LoginScreen(),
+//     );
 
-  }
+//   }
 
-}
+// }
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -32,21 +31,22 @@ class LoginScreen extends StatelessWidget {
     final stepSelected = BlocProvider.of<AuthBloc>(context).stepSelected;
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,   
             children: [
               SizedBox(height: size.height * .03),
-              SizedBox(
+              Container(
                 height: size.height * .05,
+                width: size.width * .9,
+                margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: NumberStepper(
                   enableStepTapping: false,
                   steppingEnabled: false,
                   stepColor: Colors.grey,
                   activeStepColor: TaxiColors.purple,
-                  lineLength: size.width * .05,
+                  lineLength: size.width * .02,
                   numbers: const [1, 2, 3, 4, 5, 6],
                   numberStyle: const TextStyle(color: TaxiColors.white, fontSize: 10),
                   enableNextPreviousButtons: false,
@@ -58,15 +58,15 @@ class LoginScreen extends StatelessWidget {
               BlocBuilder<AuthBloc, AuthState>(
                 builder: ( _ , state) {
           
-                  if(state is AuthInitial) {
+                  if( state is AuthUnvalidated ) {
                     return const NumberWidget();
                   }
           
-                  if(state is SendedOTPState || state is SendingOTPState ) {
+                  if( state is SendedOTPState || state is SendingOTPState ) {
                     return const ConfirmNumberWidget();
                   }
           
-                  if(state is VerifiedOTPState || state is VerifyingOTPState) {
+                  if( state is VerifiedOTPState || state is VerifyingOTPState ) {
                     return const ContactDetailWidget();
                   }
 

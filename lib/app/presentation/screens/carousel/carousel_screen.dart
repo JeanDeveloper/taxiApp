@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:taxi/app/presentation/blocs/auth/auth_bloc.dart';
 import 'package:taxi/customer/presentation/screens/screens.dart';
 class CarouselScreen extends StatelessWidget {
 
@@ -8,10 +10,13 @@ class CarouselScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(),
       body: IntroductionScreen(
-        onDone: () {
+        onDone: () async {
+
+          BlocProvider.of<AuthBloc>(context).add(const ChangeStateCarouselEvent(true));
           Navigator.pushReplacement(
             context, 
             MaterialPageRoute(
