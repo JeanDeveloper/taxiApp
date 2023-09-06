@@ -56,13 +56,12 @@ class _NumberWidgetState extends State<NumberWidget> {
             builder: (context, state) {
 
               if(state is SendingOTPState){
-
                 return CustomButtonWidget(
                   width: size.width,
                   child: const Center(child: CircularProgressIndicator()),
                 );
-
               }
+
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: size.width * .05),
                 child: CustomButtonWidget(

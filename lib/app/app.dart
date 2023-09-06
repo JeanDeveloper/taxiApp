@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:taxi/app/presentation/blocs/auth/auth_bloc.dart';
+import 'package:taxi/driver/presentation/blocs/color/color_bloc.dart';
+import 'package:taxi/driver/presentation/blocs/register/model_bloc.dart';
 import 'presentation/screens/screens.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi/app/core/themes/colors.dart';
 import 'package:taxi/app/core/injections/injections.dart';
+import 'package:taxi/app/presentation/blocs/auth/auth_bloc.dart';
 
 // import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:taxi/app/presentation/screens/carousel/carousel_screen.dart';
@@ -25,7 +27,7 @@ import 'package:taxi/app/core/injections/injections.dart';
 //   }
 // }
 
-class Taxi extends StatelessWidget {
+class Taxi extends StatelessWidget  {
 
   const Taxi({super.key});
 
@@ -34,7 +36,9 @@ class Taxi extends StatelessWidget {
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => sl<AuthBloc>())
+        BlocProvider(create: (_) => sl<AuthBloc>()),
+        BlocProvider(create: (_) => sl<ModelBloc>()),
+        BlocProvider(create: (_) => sl<ColorBloc>()),
       ], 
       child: const TaxiApp(),
     );
@@ -45,6 +49,7 @@ class Taxi extends StatelessWidget {
 
 
 class TaxiApp extends StatelessWidget {
+
   const TaxiApp({super.key});
 
   @override

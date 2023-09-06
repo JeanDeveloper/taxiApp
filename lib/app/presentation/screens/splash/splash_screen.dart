@@ -44,9 +44,11 @@ class _SplashScreenState extends State<SplashScreen> {
           // }if( user.codTipoUsuario == 4 ){
           //   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ( _ ) =>  const HomeScreenContract()));
           // }
+
         }
 
         if( state is AuthUnvalidated ){
+
           final stateCarousel =  state.viewCarousel;
 
           if(stateCarousel){
@@ -56,7 +58,6 @@ class _SplashScreenState extends State<SplashScreen> {
           }
 
         }
-
 
       },
       child: Scaffold(

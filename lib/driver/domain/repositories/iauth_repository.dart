@@ -6,7 +6,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class IAuthRepository{
-  // Future<void> verifyPhoneNumber(String phoneNumber);
 
   Future<void> sendOTP(
     {
@@ -18,8 +17,7 @@ abstract class IAuthRepository{
     }
   );
 
-  // Future<String?> sendOTP(String phone);
-  Future<void> verifyOTP(String codeNumber, String verification);
+  Future<UserCredential?> verifyOTP(String codeNumber, String verification);
   
 
 }

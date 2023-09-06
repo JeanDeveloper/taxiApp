@@ -9,8 +9,15 @@ import 'package:taxi/app/domain/usecases/sending_otp.dart';
 import 'package:taxi/app/domain/usecases/verifing_otp.dart';
 import 'package:taxi/app/presentation/blocs/auth/auth_bloc.dart';
 import 'package:taxi/driver/data/datasource/auth_datasource.dart';
+import 'package:taxi/driver/data/datasource/register_datasource.dart';
 import 'package:taxi/driver/data/repositories/firebase_auth_repository.dart';
+import 'package:taxi/driver/data/repositories/firebase_register_repository.dart';
 import 'package:taxi/driver/domain/repositories/iauth_repository.dart';
+import 'package:taxi/driver/domain/repositories/iregister_repository.dart';
+import 'package:taxi/driver/domain/usecases/get_colors.dart';
+import 'package:taxi/driver/domain/usecases/get_models.dart';
+import 'package:taxi/driver/presentation/blocs/color/color_bloc.dart';
+import 'package:taxi/driver/presentation/blocs/register/model_bloc.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -27,5 +34,16 @@ Future<void> init() async {
   sl.registerFactory(() => GetUser(sl()));
   sl.registerFactory(() => GetStateCarousel(sl()));
   sl.registerFactory(() => SaveStateCarousel(sl()));
+
+  //REGISTER BLOC
+  sl.registerLazySingleton(() => ModelBloc(sl()));
+  sl.registerLazySingleton(() => ColorBloc(sl()));
+
+  sl.registerFactory<IRegisterDataSource>(() =>  RegisterDataSource());
+  sl.registerFactory<IRegisterRepository>(() => FirebaseRegisterRepository(sl()));
+  sl.registerFactory(() => GetModels(sl()));
+  sl.registerFactory(() => GetColors(sl()));
+
+
 
 }

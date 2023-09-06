@@ -16,6 +16,11 @@ final class VerifyingOTPState extends AuthState{}
 
 final class VerifiedOTPState extends AuthState{}
 
+final class SavedContactDetalState extends AuthState{}
+
+final class SavedDriveDetalState extends AuthState{}
+
+final class SavedPayoutDetalState extends AuthState{}
 
 final class AuthLoading extends AuthState{}
 

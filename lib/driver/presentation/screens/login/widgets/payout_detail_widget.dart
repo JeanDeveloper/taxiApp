@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi/app/core/themes/colors.dart';
+import 'package:taxi/app/domain/entities/payout.dart';
+import 'package:taxi/app/presentation/blocs/auth/auth_bloc.dart';
 import 'package:taxi/driver/presentation/screens/login/widgets/widgets.dart';
 
 class PayoutDetailWidget extends StatefulWidget {
@@ -46,6 +49,7 @@ class _PayoutDetailWidgetState extends State<PayoutDetailWidget> {
               hinttext: "Yape",
               controller: yape,
               keyboardType: TextInputType.number,
+              maxLength: 9,
             ),
       
             SizedBox(height:  size.height * .02),
@@ -54,6 +58,7 @@ class _PayoutDetailWidgetState extends State<PayoutDetailWidget> {
               hinttext: "Plin",
               controller: plin,
               keyboardType: TextInputType.number,
+              maxLength: 9,
             ),
       
             SizedBox(height:  size.height * .02),
@@ -62,6 +67,7 @@ class _PayoutDetailWidgetState extends State<PayoutDetailWidget> {
               hinttext: "Numero de Cuenta BCP",
               controller: bcp,
               keyboardType: TextInputType.number,
+              maxLength: 18,
             ),
       
             SizedBox(height:  size.height * .02),
@@ -70,6 +76,7 @@ class _PayoutDetailWidgetState extends State<PayoutDetailWidget> {
               hinttext: "Numero de Cuenta BBVA",
               controller: bbva,
               keyboardType: TextInputType.number,
+              maxLength: 18,
             ),
       
             SizedBox(height:  size.height * .02),
@@ -78,6 +85,7 @@ class _PayoutDetailWidgetState extends State<PayoutDetailWidget> {
               hinttext: "Numero de Cuenta Interbank",
               controller: interbank,
               keyboardType: TextInputType.number,
+              maxLength: 18,
             ),
 
             SizedBox(height: size.height * .05),
@@ -89,7 +97,18 @@ class _PayoutDetailWidgetState extends State<PayoutDetailWidget> {
                   borderRadius: BorderRadius.circular(10),
                 )
               ),
-              onPressed: (){}, 
+              onPressed: (){
+                Payout payout = Payout(
+                  yape: yape.text, 
+                  plin: plin.text, 
+                  bcp: bcp.text, 
+                  interbank: interbank.text, 
+                  bbva: bbva.text
+                );
+
+                BlocProvider.of<AuthBloc>(context).add(SavePayoutDetailEvent(payout));
+
+              }, 
               child: const Text("Continuar", style: TextStyle(color: TaxiColors.white))
             ),
 

@@ -1,3 +1,4 @@
+import 'package:taxi/app/domain/entities/gender.dart';
 import 'package:taxi/app/domain/entities/iuser.dart';
 
 class Driver extends IUser {
@@ -8,6 +9,7 @@ class Driver extends IUser {
   String? phone;
   String? document;
   String? address;
+  Gender? gender;
   String? email;
   String? documentPath;
   String? photoPath;
@@ -19,6 +21,7 @@ class Driver extends IUser {
     this.phone,
     this.document,
     this.address,
+    this.gender,
     this.email,
     this.documentPath,
     this.photoPath,

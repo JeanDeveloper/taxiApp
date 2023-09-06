@@ -3,8 +3,7 @@
 // import 'package:firebase_auth_platform_interface/src/providers/phone_auth.dart';
 // import 'package:firebase_auth_platform_interface/src/firebase_auth_exception.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_auth_platform_interface/src/firebase_auth_exception.dart';
-import 'package:firebase_auth_platform_interface/src/providers/phone_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:taxi/driver/data/datasource/auth_datasource.dart';
 import 'package:taxi/driver/domain/repositories/iauth_repository.dart';
 
@@ -12,13 +11,6 @@ class FirebaseAuthRepository extends IAuthRepository{
 
   final IAuthDataSource authDataSource;
   FirebaseAuthRepository(this.authDataSource);
-
-   
-  // @override
-  // Future<String?> sendOTP( String phone ) async {
-  //   String? resp = await authDataSource.sendingOTP(phone);
-  //   return resp;
-  // }
 
   @override
   Future<void> sendOTP(
@@ -40,8 +32,9 @@ class FirebaseAuthRepository extends IAuthRepository{
   }
   
   @override
-  Future<void> verifyOTP(String codeNumber, String verification) async {
-    await authDataSource.verifyOTP(codeNumber, verification);
+  Future<UserCredential?> verifyOTP(String codeNumber, String verification) async {
+    UserCredential? user = await authDataSource.verifyOTP(codeNumber, verification);
+    return user;
   }
 
 

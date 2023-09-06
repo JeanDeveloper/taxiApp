@@ -11,7 +11,7 @@ abstract class IAuthDataSource{
     }
   );
 
-  Future<void> verifyOTP(String codeNumber, String verification);
+  Future<UserCredential?> verifyOTP(String codeNumber, String verification);
 
 }
 
@@ -20,7 +20,7 @@ class FirebaseDataSource extends IAuthDataSource{
   final _auth = FirebaseAuth.instance;
   
   @override
-  Future<void> verifyOTP(String codeNumber, String verification) async {
+  Future<UserCredential?> verifyOTP(String codeNumber, String verification) async {
 
     PhoneAuthCredential credential =  PhoneAuthProvider.credential(
       verificationId: verification, 
@@ -29,9 +29,8 @@ class FirebaseDataSource extends IAuthDataSource{
 
     UserCredential user = await _auth.signInWithCredential(credential);
 
-    print(user.additionalUserInfo!.isNewUser);
-    print(user.credential);
-    print(user.user!.uid);
+    return user;
+
 
   }
 

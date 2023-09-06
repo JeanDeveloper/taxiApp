@@ -1,7 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:taxi/app/domain/entities/drive.dart';
+import 'package:taxi/app/domain/entities/driver.dart';
 import 'package:taxi/app/domain/entities/iuser.dart';
+import 'package:taxi/app/domain/entities/payout.dart';
 import 'package:taxi/app/domain/usecases/get_state_carousel.dart';
 import 'package:taxi/app/domain/usecases/get_user.dart';
 import 'package:taxi/app/domain/usecases/save_state_carousel.dart';
@@ -23,6 +26,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   String? verification;
   String phone="";
   IUser? user;
+  Drive? drive;
+  Payout? payout;
 
   AuthBloc(
     this.sendingOTP, 
@@ -51,18 +56,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if( event is SendOTPEvent ) {
         print(event.phoneNumber);
         emit(SendingOTPState());
-        await sendingOTP(
+        final result = await sendingOTP(
           event.phoneNumber,
-          (PhoneAuthCredential phoneAuthCredential) async {
+          (PhoneAuthCredential phoneAuthCredential) {
             print(phoneAuthCredential);
           },
-          (FirebaseAuthException e) async {
+          (FirebaseAuthException e)  {
             print(e.message);
-
           },
-          (String verificationId, int? resendToken) async {
+          (String verificationId, int? resendToken) {
             verification = verificationId;
-            print(verification);       
           },
           (String verificationId){
             print(verificationId);
@@ -70,28 +73,43 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
         phone = event.phoneNumber;
         stepSelected = stepSelected + 1;
-        emit(SendedOTPState());
+        emit( SendedOTPState() );
       }
 
       if( event is VerifyOTPEvent ) {
-        print(event.codeNumber);
         emit(VerifyingOTPState());
-        await verifyingOTP( event.codeNumber, verification ?? '' );
-        
-        
-        
-        stepSelected = stepSelected + 1;
-        emit(VerifiedOTPState());
+        final UserCredential? userTemp = await verifyingOTP( event.codeNumber, verification ?? '' );
+        final IUser usuario = Driver(
+          uid: userTemp!.user!.uid,
+          phone: userTemp.user!.phoneNumber,
+        );
+        user = usuario;
+
+        if( userTemp.additionalUserInfo!.isNewUser ){
+          stepSelected = stepSelected + 1;
+          emit( VerifiedOTPState()) ;
+        } else {
+          AuthLoged(usuario);
+        }
+
       }
 
+      if( event is SaveContactDetailEvent ) {
+        stepSelected = stepSelected + 1;
+        emit( SavedContactDetalState() ) ;
+      }
 
-      // if( event is ConfirmVerificationCode ) {
-      //   print(event.codeNumber);
-      //   emit(PhoneConfirming());
-      //   await Future.delayed(const Duration(seconds: 3));
-      //   stepSelected = stepSelected + 1;
-      //   emit(PhoneConfirmed());
-      // }
+      if( event is SaveDriveDetailEvent ) {
+        drive = event.drive;
+        stepSelected = stepSelected + 1;
+        emit( SavedDriveDetalState() ) ;
+      }
+
+      if( event is SavePayoutDetailEvent ) {
+        payout = event.payout;
+        stepSelected = stepSelected + 1;
+        emit( SavedPayoutDetalState() ) ;
+      }
 
     });
   }

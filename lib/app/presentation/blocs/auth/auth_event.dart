@@ -27,4 +27,19 @@ class ChangeStateCarouselEvent extends AuthEvent{
   const ChangeStateCarouselEvent(this.state);
 }
 
+class SaveContactDetailEvent extends AuthEvent{
+  final IUser user;
+  const SaveContactDetailEvent(this.user);
+}
+
+
+class SaveDriveDetailEvent extends AuthEvent{
+  final Drive drive;
+  const SaveDriveDetailEvent(this.drive);
+}
+
+class SavePayoutDetailEvent extends AuthEvent{
+  final Payout payout;
+  const SavePayoutDetailEvent(this.payout);
+}
 

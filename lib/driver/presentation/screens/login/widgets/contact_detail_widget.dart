@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi/app/core/constants/constants.dart';
 import 'package:taxi/app/core/themes/colors.dart';
+import 'package:taxi/app/domain/entities/driver.dart';
 import 'package:taxi/app/domain/entities/gender.dart';
+import 'package:taxi/app/presentation/blocs/auth/auth_bloc.dart';
 import 'package:taxi/app/presentation/widgets/widgets.dart';
 import 'package:taxi/driver/presentation/screens/login/widgets/widgets.dart';
 
@@ -32,6 +35,7 @@ class _ContactDetailWidgetState extends State<ContactDetailWidget> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final authBloc = BlocProvider.of<AuthBloc>(context);
     return Padding(
       padding: const EdgeInsets.symmetric( horizontal: 20),
       child: SizedBox(
@@ -118,16 +122,21 @@ class _ContactDetailWidgetState extends State<ContactDetailWidget> {
               keyboardType: TextInputType.streetAddress,
             ),
         
-            // SizedBox(height: size.height * .05),
-
             const Spacer(),
       
             CustomButtonWidget(
               width: size.width,
-              child: const Text("Continuar", style: TextStyle(color: TaxiColors.white)),              
-              onPressed: (){
-
+              onPressed: () {
+                Driver user   = authBloc.user as Driver;
+                user.gender   = _selectedGender;
+                user.name     = name.text;
+                user.surname  = surname.text;
+                user.document = document.text;
+                user.email    = email.text;
+                user.address  = address.text;
+                BlocProvider.of<AuthBloc>(context).add(SaveContactDetailEvent(user));
               },
+              child: const Text("Continuar", style: TextStyle(color: TaxiColors.white)),              
             )
            
           ],
