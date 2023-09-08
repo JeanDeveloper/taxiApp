@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:taxi/app/domain/entities/drive.dart';
 import 'package:taxi/app/domain/entities/driver.dart';
 import 'package:taxi/app/domain/entities/iuser.dart';
@@ -28,6 +29,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   IUser? user;
   Drive? drive;
   Payout? payout;
+  XFile? photoProfile;
+  XFile? photoDocument;
+  XFile? photoLicense;
+  XFile? photoCardOwner;
+
 
   AuthBloc(
     this.sendingOTP, 
@@ -91,7 +97,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         } else {
           AuthLoged(usuario);
         }
-
       }
 
       if( event is SaveContactDetailEvent ) {
@@ -109,6 +114,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         payout = event.payout;
         stepSelected = stepSelected + 1;
         emit( SavedPayoutDetalState() ) ;
+      }
+
+      if( event is UploadDocEvent ){
+
+        await Future.delayed(const Duration(seconds: 2));
+        emit( AuthLoged(user!) ) ;
+        //METODO PARA GUARDAR LAS IMAGENES PRIEMRO Y LUEGO LAS RUTAS LAS AGREGAMOS EN LOS OBJETOS.
+
       }
 
     });

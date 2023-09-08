@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi/app/core/themes/colors.dart';
+import 'package:taxi/app/presentation/blocs/auth/auth_bloc.dart';
 import 'package:taxi/driver/presentation/screens/login/widgets/widgets.dart';
 
 class UpdateDocumentWidget extends StatefulWidget {
@@ -18,7 +20,6 @@ class _UpdateDocumentWidgetState extends State<UpdateDocumentWidget> {
       child: Padding(
         padding: const EdgeInsets.symmetric( horizontal: 20),
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
 
           children: [
@@ -34,8 +35,16 @@ class _UpdateDocumentWidgetState extends State<UpdateDocumentWidget> {
             SizedBox(height:  size.height * .02),
             const Text("1. Documento Nacional de Identidad.\n 2. Licencia de conducir.\n 3.Tarjeta de Propiedad del vehiculo.", style: TextStyle(color: Colors.grey),textAlign: TextAlign.start),
             SizedBox(height:  size.height * .02),
-            const CardDocumentWidget(),
-            SizedBox(height: size.height * .05),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DniDocumentWidget(),
+                LicenseDocumentWidget(),
+                CardOwnerDocumentWidget(),
+              ],
+            ),
+            SizedBox(height: size.height * .02),
             OutlinedButton(
               style:OutlinedButton.styleFrom(
                 backgroundColor: TaxiColors.purple,
@@ -44,10 +53,14 @@ class _UpdateDocumentWidgetState extends State<UpdateDocumentWidget> {
                   borderRadius: BorderRadius.circular(10),
                 )
               ),
-              onPressed: (){}, 
+              onPressed: (){
+
+                BlocProvider.of<AuthBloc>(context).add(UploadDocEvent());
+
+              }, 
               child: const Text("Confirmar y Continuar", style: TextStyle(color: TaxiColors.white))
             ),
-      
+
           ],
         ),
       ),

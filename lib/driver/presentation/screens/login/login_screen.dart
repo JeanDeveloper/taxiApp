@@ -89,6 +89,14 @@ class LoginScreen extends StatelessWidget {
                       return const UpdateDocumentWidget();
                     }
 
+                    if (state is AuthLoged) {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ( _ ) =>  const HomeScreen()));        
+                    }
+
+                    // if (state is UploadedDocState) {
+                    //   return const UpdateDocumentWidget();
+                    // }
+
                     return SizedBox(
                       width: double.infinity,
                       height: size.height * .95,

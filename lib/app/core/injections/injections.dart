@@ -1,14 +1,18 @@
 import 'package:get_it/get_it.dart';
 import 'package:taxi/app/data/datasource/local_storage_datasource.dart';
+import 'package:taxi/app/data/repositories/geolocator_repository.dart';
 import 'package:taxi/app/data/repositories/local_storage_repository.dart';
 import 'package:taxi/app/domain/repositories/ilocal_storage_repository.dart';
+import 'package:taxi/app/domain/repositories/ilocation_repository.dart';
 import 'package:taxi/app/domain/usecases/get_state_carousel.dart';
 import 'package:taxi/app/domain/usecases/get_user.dart';
 import 'package:taxi/app/domain/usecases/save_state_carousel.dart';
 import 'package:taxi/app/domain/usecases/sending_otp.dart';
 import 'package:taxi/app/domain/usecases/verifing_otp.dart';
 import 'package:taxi/app/presentation/blocs/auth/auth_bloc.dart';
+import 'package:taxi/app/presentation/blocs/location/location_bloc.dart';
 import 'package:taxi/driver/data/datasource/auth_datasource.dart';
+import 'package:taxi/driver/data/datasource/location_datasource.dart';
 import 'package:taxi/driver/data/datasource/register_datasource.dart';
 import 'package:taxi/driver/data/repositories/firebase_auth_repository.dart';
 import 'package:taxi/driver/data/repositories/firebase_register_repository.dart';
@@ -44,6 +48,8 @@ Future<void> init() async {
   sl.registerFactory(() => GetModels(sl()));
   sl.registerFactory(() => GetColors(sl()));
 
-
+  sl.registerFactory<ILocationDataSource>(() =>  GoogleMapsDataSource());
+  sl.registerFactory<ILocationRepository>(() =>  GeolocatorLocationRepository(sl()));
+  sl.registerLazySingleton(() => LocationBloc(sl()));
 
 }

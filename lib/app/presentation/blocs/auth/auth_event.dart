@@ -32,7 +32,6 @@ class SaveContactDetailEvent extends AuthEvent{
   const SaveContactDetailEvent(this.user);
 }
 
-
 class SaveDriveDetailEvent extends AuthEvent{
   final Drive drive;
   const SaveDriveDetailEvent(this.drive);
@@ -43,3 +42,18 @@ class SavePayoutDetailEvent extends AuthEvent{
   const SavePayoutDetailEvent(this.payout);
 }
 
+class UploadDocEvent extends AuthEvent{
+  // final XFile photoProfile;
+  // final XFile photoDocument;
+  // final XFile photoLicense;
+  // final XFile photoCardOnwer;
+
+
+  // const UploadDocEvent({
+  //   // required this.photoProfile, 
+  //   // required this.photoDocument, 
+  //   // required this.photoLicense, 
+  //   // required this.photoCardOnwer
+  // });
+
+}
