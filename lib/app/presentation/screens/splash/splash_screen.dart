@@ -51,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
           final stateCarousel =  state.viewCarousel;
 
           if(stateCarousel){
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ( _ ) => LoginScreen()));
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ( _ ) => const LoginScreen()));
           }else{
             Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ( _ ) => const CarouselScreen()));
           }
@@ -74,11 +74,15 @@ class _SplashScreenState extends State<SplashScreen> {
                   child: Image.asset("assets/png/logo-suro.png"),
                 ),
               ),
-              SizedBox(height: size.height * .05),
-              Text("Suro Taxi",
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                      fontWeight: FontWeight.bold, color: TaxiColors.white))
+              SizedBox( height: size.height * .05 ),
+              Text(
+                "Suro Taxi",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                  fontWeight: FontWeight.bold, 
+                  color: TaxiColors.white
+                )
+              )
             ],
           ),
         ),

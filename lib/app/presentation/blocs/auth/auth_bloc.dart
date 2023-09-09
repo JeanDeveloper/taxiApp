@@ -34,7 +34,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   XFile? photoLicense;
   XFile? photoCardOwner;
 
-
   AuthBloc(
     this.sendingOTP, 
     this.verifyingOTP, 
@@ -117,11 +116,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
 
       if( event is UploadDocEvent ){
-
         await Future.delayed(const Duration(seconds: 2));
         emit( AuthLoged(user!) ) ;
         //METODO PARA GUARDAR LAS IMAGENES PRIEMRO Y LUEGO LAS RUTAS LAS AGREGAMOS EN LOS OBJETOS.
-
       }
 
     });

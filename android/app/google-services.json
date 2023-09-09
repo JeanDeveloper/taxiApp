@@ -29,6 +29,13 @@
             {
               "client_id": "114284606224-s405v10jko1qrotj6ohhknnfieamfi5u.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "114284606224-kbvuf4t84l3srk93ahvehqsi9ppu39ku.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.taxi"
+              }
             }
           ]
         }

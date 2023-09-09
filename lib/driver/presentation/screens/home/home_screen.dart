@@ -85,7 +85,6 @@ class _HomeScreenInitState extends State<HomeScreenInit> {
                 return Text(state.errorMessage);
               }
 
-
               return GoogleMap(
                 mapType: MapType.normal,
                 initialCameraPosition: _kGooglePlex,
