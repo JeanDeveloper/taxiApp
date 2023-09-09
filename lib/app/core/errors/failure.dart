@@ -29,3 +29,9 @@ class CacheFailure extends Failure{
     required String message
   }): super(message: message);
 }
+
+class LocationFailure extends Failure{
+  const LocationFailure({
+    required String message
+  }): super(message: message);
+}

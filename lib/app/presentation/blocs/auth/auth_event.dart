@@ -32,7 +32,6 @@ class SaveContactDetailEvent extends AuthEvent{
   const SaveContactDetailEvent(this.user);
 }
 
-
 class SaveDriveDetailEvent extends AuthEvent{
   final Drive drive;
   const SaveDriveDetailEvent(this.drive);
@@ -43,3 +42,4 @@ class SavePayoutDetailEvent extends AuthEvent{
   const SavePayoutDetailEvent(this.payout);
 }
 
+class UploadDocEvent extends AuthEvent{}

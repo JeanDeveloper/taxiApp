@@ -34,11 +34,10 @@ final class AuthError extends AuthState{
   const AuthError(this.message);
 }
 
-class AuthLogout extends AuthState{}
+final class AuthLogout extends AuthState{}
 
-class AuthUnvalidated extends AuthState{
+final class AuthUnvalidated extends AuthState{
   final bool viewCarousel;
   const AuthUnvalidated(this.viewCarousel);
 }
-
 

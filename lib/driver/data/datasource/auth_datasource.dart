@@ -1,4 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 
 abstract class IAuthDataSource{
 
@@ -13,11 +16,14 @@ abstract class IAuthDataSource{
 
   Future<UserCredential?> verifyOTP(String codeNumber, String verification);
 
+  Future? uploadFile(File file);
+
 }
 
 class FirebaseDataSource extends IAuthDataSource{
 
   final _auth = FirebaseAuth.instance;
+  final _storage = FirebaseStorage.instance.ref();
   
   @override
   Future<UserCredential?> verifyOTP(String codeNumber, String verification) async {
@@ -59,46 +65,19 @@ class FirebaseDataSource extends IAuthDataSource{
     }
 
   }
-
-  // @override
-  // Future<void> verifyPhoneNumber( String phone ) async {
-
-    // await _firebaseAuth.verifyPhoneNumber(
-    //   phoneNumber: "+51919476763",
-
-    //   verificationCompleted: (PhoneAuthCredential credential) async {
-    //     // ANDROID ONLY!
-    //     // Sign the user in (or link) with the auto-generated credential
-    //     print("verificacion completada");
-    //     await _firebaseAuth.signInWithCredential(credential);
-    //   },
-
-    //   verificationFailed: (FirebaseAuthException e) {
-    //     if(e.code == 'invalid-phone-number'){
-    //       print("Numero incorrecto ${e.message}");
-    //     }
-
-    //     print("codigo del fallo: ${e.message}");
-    //   },
-
-    //   codeSent: (String verificationId, int? resendToken) async {
-    //     print("Se envio el codigo exitosamente");
-    //     // Update the UI - wait for the user to enter the SMS code
-    //     String smsCode = '123456';
-
-    //     // Create a PhoneAuthCredential with the code
-    //     PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
-
-    //       // Sign the user in (or link) with the credential
-    //     await _firebaseAuth.signInWithCredential(credential);
-    //   },
-
-    //   codeAutoRetrievalTimeout: (String verificationId) {
-    //     print(verificationId);
-    //   },
-
-    // );
-
-  // }
+  
+  @override
+  Future<String?> uploadFile(File file) async {
+    try {
+      final storageReference = _storage.child('sertech/sudo-app/image.jpg');
+      final uploadTask = storageReference.putFile(file);
+      final snapshot = await uploadTask.whenComplete(() {});
+      final downloadURL = await snapshot.ref.getDownloadURL();
+      return downloadURL;
+    } catch (e) {
+      print('Error al cargar el archivo: $e');
+      return null;
+    }
+  }
   
 }

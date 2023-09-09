@@ -29,88 +29,98 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final stepSelected = BlocProvider.of<AuthBloc>(context).stepSelected;
+    final autBloc = BlocProvider.of<AuthBloc>(context);
 
     return BlocListener<AuthBloc, AuthState>(
-      listener: ( _ , state) {
+      listener: (_, state) {
         if (state is AuthLoged) {
-          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ( _ ) =>  const HomeScreen()));        
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (_) => const HomeScreen()));
         }
       },
       child: Scaffold(
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: size.height * .03),
-                Container(
-                  height: size.height * .05,
-                  width: size.width * .9,
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  child: NumberStepper(
-                    enableStepTapping: false,
-                    steppingEnabled: false,
-                    stepColor: Colors.grey,
-                    activeStepColor: TaxiColors.purple,
-                    lineLength: size.width * .005,
-                    numbers: const [1, 2, 3, 4, 5, 6],
-                    numberStyle:
-                        const TextStyle(color: TaxiColors.white, fontSize: 10),
-                    enableNextPreviousButtons: false,
-                    activeStep: stepSelected,
-                  ),
-                ),
+          body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: size.height * .03),
+              BlocBuilder<AuthBloc, AuthState>(
+                builder: (context, state) {
+                  return Container(
+                    height: size.height * .05,
+                    width: size.width * .9,
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    child: NumberStepper(
+                      enableStepTapping: false,
+                      steppingEnabled: false,
+                      stepColor: Colors.grey,
+                      activeStepColor: TaxiColors.purple,
+                      lineLength: size.width * .005,
+                      numbers: const [1, 2, 3, 4, 5, 6],
+                      numberStyle: const TextStyle(
+                          color: TaxiColors.white, fontSize: 10),
+                      enableNextPreviousButtons: false,
+                      activeStep: autBloc.stepSelected,
+                    ),
+                  );
+                },
+              ),
 
-                BlocBuilder<AuthBloc, AuthState>(
-                  builder: (_, state) {
+              BlocBuilder<AuthBloc, AuthState>(
+                builder: (_, state) {
 
-                    if (state is AuthUnvalidated) {
-                      return const NumberWidget();
-                    }
+                  if (state is AuthUnvalidated) {
+                    return const NumberWidget();
+                  }
 
-                    if (state is SendedOTPState) {
-                      return const ConfirmNumberWidget();
-                    }
+                  if (state is SendedOTPState) {
+                    return const ConfirmNumberWidget();
+                  }
 
-                    if (state is VerifiedOTPState) {
-                      return const ContactDetailWidget();
-                    }
+                  if (state is VerifiedOTPState) {
+                    return const ContactDetailWidget();
+                  }
 
-                    if (state is SavedContactDetalState) {
-                      return const CarDetailWidget();
-                    }
+                  if (state is SavedContactDetalState) {
+                    return const CarDetailWidget();
+                  }
 
-                    if (state is SavedDriveDetalState) {
-                      return const PayoutDetailWidget();
-                    }
+                  if (state is SavedDriveDetalState) {
+                    return const PayoutDetailWidget();
+                  }
 
-                    if (state is SavedPayoutDetalState) {
-                      return const UpdateDocumentWidget();
-                    }
+                  if (state is SavedPayoutDetalState) {
+                    return const UpdateDocumentWidget();
+                  }
 
-                    return SizedBox(
-                      width: double.infinity,
-                      height: size.height * .95,
-                      child: const Center(
-                        child: CircularProgressIndicator()
-                      )
-                    );
+                  // if (state is AuthLoged) {
+                  //   Future.microtask(() =>Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const HomeScreen())));
+                  // }
+                  
 
-                  },
-                ),
+                  // if (state is UploadedDocState) {
+                  //   return const UpdateDocumentWidget();
+                  // }
 
-                // const NumberWidget()
-                // const ConfirmNumberWidget()
-                // const ContactDetailWidget(),
-                // const CarDetailWidget(),
-                // const PayoutDetailWidget(),
-                // const UpdateDocumentWidget(),
-              ],
-            ),
+                  return SizedBox(
+                    width: double.infinity,
+                    height: size.height * .95,
+                    child: const Center(child: CircularProgressIndicator())
+                  );
+                },
+              ),
+
+              // const NumberWidget()
+              // const ConfirmNumberWidget()
+              // const ContactDetailWidget(),
+              // const CarDetailWidget(),
+              // const PayoutDetailWidget(),
+              // const UpdateDocumentWidget(),
+            ],
           ),
-        )
-      ),
+        ),
+      )),
     );
   }
 }
