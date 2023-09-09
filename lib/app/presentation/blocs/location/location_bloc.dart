@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:taxi/app/core/errors/failure.dart';
 import 'package:taxi/app/domain/repositories/ilocation_repository.dart';
-import 'package:taxi/app/presentation/screens/carousel/widgets/position.dart';
 
 part 'location_event.dart';
 part 'location_state.dart';
@@ -20,7 +20,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
         final positions = await iLocationRepository.getCurrentLocation();
 
-        emit(_failureOrPosition(positions as Either<Failure, Position>));
+        emit(_failureOrPosition( positions ));
 
       }
 

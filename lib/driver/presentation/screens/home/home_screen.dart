@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi/app/core/injections/injections.dart';
-import 'package:taxi/app/presentation/blocs/location/location_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:taxi/driver/presentation/widgets/widgets.dart';
+import 'package:taxi/app/presentation/blocs/location/location_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -19,6 +19,7 @@ class HomeScreen extends StatelessWidget {
       child: const HomeScreenInit(),
     );
   }
+
 }
 
 class HomeScreenInit extends StatefulWidget {
@@ -63,7 +64,7 @@ class _HomeScreenInitState extends State<HomeScreenInit> {
               }
 
               if( state is LocationLoaded ){
-                Position pos = state.position as Position;
+                Position pos = state.position;
 
                  CameraPosition currentPos = CameraPosition(
                   target: LatLng(pos.latitude, pos.longitude),
@@ -77,7 +78,6 @@ class _HomeScreenInitState extends State<HomeScreenInit> {
                     _controller.complete(controller);
                   },
                 );
-
                 
               }
 

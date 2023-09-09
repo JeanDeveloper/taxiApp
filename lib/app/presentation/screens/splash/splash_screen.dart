@@ -7,7 +7,6 @@ import 'package:taxi/customer/presentation/screens/login/login_screen.dart';
 import 'package:taxi/driver/presentation/screens/home/home_screen.dart';
 
 
-
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
