@@ -8,6 +8,7 @@ import 'package:taxi/app/domain/usecases/get_state_carousel.dart';
 import 'package:taxi/app/domain/usecases/get_user.dart';
 import 'package:taxi/app/domain/usecases/save_state_carousel.dart';
 import 'package:taxi/app/domain/usecases/sending_otp.dart';
+import 'package:taxi/app/domain/usecases/upload_file.dart';
 import 'package:taxi/app/domain/usecases/verifing_otp.dart';
 import 'package:taxi/app/presentation/blocs/auth/auth_bloc.dart';
 import 'package:taxi/app/presentation/blocs/location/location_bloc.dart';
@@ -27,11 +28,12 @@ final sl = GetIt.instance;
 Future<void> init() async {
 
   //INJECTIONS FOR AUTH BLOC
-  sl.registerLazySingleton(() => AuthBloc(sl(), sl(), sl(), sl(), sl()));
+  sl.registerLazySingleton(() => AuthBloc(sl(), sl(), sl(), sl(), sl(), sl()));
   sl.registerFactory<IAuthRepository>(() => FirebaseAuthRepository(sl()));
   sl.registerFactory<IAuthDataSource>(() =>  FirebaseDataSource());
   sl.registerFactory(() => SendingOTP(sl()));
   sl.registerFactory(() => VerifingOTP(sl()));
+  sl.registerFactory(() => UploadingFileCU(sl()));
   
   sl.registerFactory<ILocalStorageRepository>(() => LocalStorageRepository(sl()));
   sl.registerFactory<ILocalStorageDataSource>(() => LocalStorageDataSource());

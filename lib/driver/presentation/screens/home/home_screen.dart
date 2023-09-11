@@ -66,7 +66,7 @@ class _HomeScreenInitState extends State<HomeScreenInit> {
               if( state is LocationLoaded ){
                 Position pos = state.position;
 
-                 CameraPosition currentPos = CameraPosition(
+                CameraPosition currentPos = CameraPosition(
                   target: LatLng(pos.latitude, pos.longitude),
                   zoom: 14.4746,
                 );

@@ -22,12 +22,17 @@ class WelcomeScreen extends StatelessWidget {
                 color:TaxiColors.dark
               ),
             ),
-            Positioned( bottom: size.height * .25, left: size.width * .4, child: const Text("¡Bienvenido!", style: TextStyle(fontWeight: FontWeight.bold))),
+            Positioned( 
+              bottom: size.height * .25, 
+              left: size.width * .4, 
+              child: const Text("¡Bienvenido!", style: TextStyle(fontWeight: FontWeight.bold))
+            ),
             Positioned(
               bottom: size.height * .15,
               child: CustomButtonWidget(
+                padding: EdgeInsets.symmetric(horizontal: size.aspectRatio * 50),
                 width: size.width,
-                child: const Text("Enviar Codigo", style: TextStyle(color: TaxiColors.white)),
+                child: const Text("Iniciar Sesion", style: TextStyle(color: TaxiColors.white)),
                 onPressed:() => Navigator.push(
                   context, 
                   MaterialPageRoute(

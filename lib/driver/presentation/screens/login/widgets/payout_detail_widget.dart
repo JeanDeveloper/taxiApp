@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi/app/core/themes/colors.dart';
 import 'package:taxi/app/domain/entities/payout.dart';
 import 'package:taxi/app/presentation/blocs/auth/auth_bloc.dart';
+import 'package:taxi/app/presentation/widgets/widgets.dart';
 import 'package:taxi/driver/presentation/screens/login/widgets/widgets.dart';
 
 class PayoutDetailWidget extends StatefulWidget {
@@ -89,15 +90,10 @@ class _PayoutDetailWidgetState extends State<PayoutDetailWidget> {
             ),
 
             SizedBox(height: size.height * .05),
-            OutlinedButton(
-              style:OutlinedButton.styleFrom(
-                backgroundColor: TaxiColors.purple,
-                padding: const EdgeInsets.symmetric(horizontal: 150, vertical: 15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                )
-              ),
-              onPressed: (){
+
+            CustomButtonWidget(
+              width: size.width,
+              onPressed: () {
                 Payout payout = Payout(
                   yape: yape.text, 
                   plin: plin.text, 
@@ -105,12 +101,10 @@ class _PayoutDetailWidgetState extends State<PayoutDetailWidget> {
                   interbank: interbank.text, 
                   bbva: bbva.text
                 );
-
                 BlocProvider.of<AuthBloc>(context).add(SavePayoutDetailEvent(payout));
-
-              }, 
-              child: const Text("Continuar", style: TextStyle(color: TaxiColors.white))
-            ),
+              },
+              child: const Text("Continuar", style: TextStyle(color: TaxiColors.white)),              
+            )
 
           ],
         ),

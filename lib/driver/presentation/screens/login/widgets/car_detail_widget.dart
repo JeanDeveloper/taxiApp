@@ -5,6 +5,7 @@ import 'package:taxi/app/core/themes/colors.dart';
 import 'package:taxi/app/domain/entities/drive.dart';
 import 'package:taxi/app/domain/entities/driver.dart';
 import 'package:taxi/app/presentation/blocs/auth/auth_bloc.dart';
+import 'package:taxi/app/presentation/widgets/widgets.dart';
 import 'package:taxi/driver/domain/entities/color_vehicle.dart';
 import 'package:taxi/driver/domain/entities/model_vehicle.dart';
 import 'package:taxi/driver/presentation/blocs/color/color_bloc.dart';
@@ -40,13 +41,14 @@ class _CarDetailWidgetState extends State<CarDetailWidget> {
       listener: (context, state) {
         if (state is RegisterError) {
           Fluttertoast.showToast(
-              msg: state.message,
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.CENTER,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: 16.0);
+            msg: state.message,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+          );
         }
       },
       child: Padding(
@@ -88,8 +90,9 @@ class _CarDetailWidgetState extends State<CarDetailWidget> {
               height: size.height * .07,
               padding: const EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
-                  color: TaxiColors.lightGrey,
-                  borderRadius: BorderRadius.circular(10)),
+                color: TaxiColors.lightGrey,
+                borderRadius: BorderRadius.circular(10)
+              ),
               child: BlocBuilder<ModelBloc, ModelState>(
                 builder: (context, state) {
                   if (state is RegisterInitial) {
@@ -166,21 +169,14 @@ class _CarDetailWidgetState extends State<CarDetailWidget> {
               ),
             ),
             SizedBox(height: size.height * .05),
-            OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                backgroundColor: TaxiColors.purple,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 150, 
-                  vertical: 15
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                )
-              ),
-              onPressed: () {
-                Driver user   = authBloc.user as Driver;
 
-                Drive drive  = Drive(
+            CustomButtonWidget(
+              width: size.width,
+              onPressed: () {
+
+                Driver user = authBloc.user as Driver;
+
+                Drive drive = Drive(
                   plate   : plateNumber.text,
                   year    : yearVehicle.text,
                   idModel : (_selectedModel == null ) ? "" : _selectedModel!.id,
@@ -188,10 +184,43 @@ class _CarDetailWidgetState extends State<CarDetailWidget> {
                   idUser  : user.uid,
                 );
                 BlocProvider.of<AuthBloc>(context).add(SaveDriveDetailEvent(drive));
+
               },
-              child: const Text("Continuar",
-                  style: TextStyle(color: TaxiColors.white))
+              child: const Text("Continuar", style: TextStyle(color: TaxiColors.white)),              
             ),
+
+
+            // OutlinedButton(
+            //   style: OutlinedButton.styleFrom(
+            //     backgroundColor: TaxiColors.purple,
+            //     padding: const EdgeInsets.symmetric(
+            //       horizontal: 150, 
+            //       vertical: 15
+            //     ),
+            //     shape: RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.circular(10),
+            //     )
+            //   ),
+            //   onPressed: () {
+            //     Driver user = authBloc.user as Driver;
+
+            //     Drive drive = Drive(
+            //       plate   : plateNumber.text,
+            //       year    : yearVehicle.text,
+            //       idModel : (_selectedModel == null ) ? "" : _selectedModel!.id,
+            //       idColor : ( _selectedColor == null ) ? "" : _selectedColor!.id,
+            //       idUser  : user.uid,
+            //     );
+            //     BlocProvider.of<AuthBloc>(context).add(SaveDriveDetailEvent(drive));
+            //   },
+            //   child: const Text("Continuar",
+            //       style: TextStyle(color: TaxiColors.white))
+            // ),
+
+
+
+
+
           ],
         ),
       ),

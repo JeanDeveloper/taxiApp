@@ -31,16 +31,16 @@ class _NumberWidgetState extends State<NumberWidget> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
       child: Column(        
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-      
+
           const Text("Ingresa tu numero de telefono", style: TextStyle(fontWeight: FontWeight.bold)),
           const Text("Le enviaremos un código a su número para continuar con el registro"),
-        
+
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
             child: CustomTextInput(
@@ -62,24 +62,21 @@ class _NumberWidgetState extends State<NumberWidget> {
                 );
               }
 
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: size.width * .05),
-                child: CustomButtonWidget(
-                  width: size.width,
-                  child: const Text("Enviar Codigo", style: TextStyle(color: TaxiColors.white)),
-                  onPressed: () {
-                    if( numberController.text.trim() == "" ){
-                      return;
-                    }else{
-                      BlocProvider.of<AuthBloc>(context).add(SendOTPEvent(numberController.text));
-                    }
-                  },
-                ),
+              return CustomButtonWidget(
+                width: size.width,
+                child: const Text("Enviar Codigo", style: TextStyle(color: TaxiColors.white)),
+                onPressed: () {
+                  if( numberController.text.trim() == "" ){
+                    return;
+                  }else{
+                    BlocProvider.of<AuthBloc>(context).add(SendOTPEvent(numberController.text));
+                  }
+                },
               );
 
             },
           ),
-      
+
         ],
         
       ),

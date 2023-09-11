@@ -41,3 +41,12 @@ final class AuthUnvalidated extends AuthState{
   const AuthUnvalidated(this.viewCarousel);
 }
 
+class UploadingFileState extends AuthState{}
+
+class UploadedFileState extends AuthState{}
+
+class UploadedFileErrorState extends AuthState{
+  final String message;
+  const UploadedFileErrorState(this.message);
+
+}
