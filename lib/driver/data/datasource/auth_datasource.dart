@@ -68,7 +68,7 @@ class FirebaseDataSource extends IAuthDataSource{
   
   @override
   Future<String?> uploadFile(File file) async {
-    try {
+    try { 
       final storageReference = _storage.child('sertech/sudo-app/image.jpg');
       final uploadTask = storageReference.putFile(file);
       final snapshot = await uploadTask.whenComplete(() {});
