@@ -5,6 +5,9 @@ class CustomButtonWidget extends StatelessWidget {
 
   final Widget child;
   final double width;
+  final EdgeInsets? margin;
+  final EdgeInsets? padding;
+
   // final double? height;
   final void Function()? onPressed ;
 
@@ -13,23 +16,22 @@ class CustomButtonWidget extends StatelessWidget {
     this.onPressed, 
     required this.child, 
     required this.width,
-    // this.height
+    this.margin,
+    this.padding
   });
 
   @override
   Widget build(BuildContext context) {
 
-    // final size = MediaQuery.of(context).size;
-
     return Container(
-      // padding: EdgeInsets.symmetric(horizontal: size.width * .05),
+      margin: margin,
+      padding: padding,
       width: width,
-      // height: height,
       child: ElevatedButton(
         style: const ButtonStyle(
-          
+
           backgroundColor: MaterialStatePropertyAll(TaxiColors.purple),
-      
+
           shape: MaterialStatePropertyAll(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.only(

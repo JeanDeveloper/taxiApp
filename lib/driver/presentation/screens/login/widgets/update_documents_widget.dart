@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi/app/core/themes/colors.dart';
+import 'package:taxi/app/presentation/widgets/widgets.dart';
 import 'package:taxi/app/presentation/blocs/auth/auth_bloc.dart';
 import 'package:taxi/driver/presentation/screens/login/widgets/widgets.dart';
 
 class UpdateDocumentWidget extends StatefulWidget {
   const UpdateDocumentWidget({super.key});
-
   @override
   State<UpdateDocumentWidget> createState() => _UpdateDocumentWidgetState();
 }
@@ -21,7 +21,6 @@ class _UpdateDocumentWidgetState extends State<UpdateDocumentWidget> {
         padding: const EdgeInsets.symmetric( horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-
           children: [
             SizedBox(height:  size.height * .02),
             const Text("Actualiza la foto de perfil", style: TextStyle(fontWeight: FontWeight.bold)),
@@ -45,22 +44,13 @@ class _UpdateDocumentWidgetState extends State<UpdateDocumentWidget> {
               ],
             ),
             SizedBox(height: size.height * .02),
-            OutlinedButton(
-              style:OutlinedButton.styleFrom(
-                backgroundColor: TaxiColors.purple,
-                padding: const EdgeInsets.symmetric(horizontal: 110, vertical: 15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                )
-              ),
-              onPressed: (){
-
+            CustomButtonWidget(
+              width: size.width,
+              onPressed: () {
                 BlocProvider.of<AuthBloc>(context).add(UploadDocEvent());
-
-              }, 
-              child: const Text("Confirmar y Continuar", style: TextStyle(color: TaxiColors.white))
-            ),
-
+              },
+              child: const Text("Continuar", style: TextStyle(color: TaxiColors.white)),              
+            )
           ],
         ),
       ),

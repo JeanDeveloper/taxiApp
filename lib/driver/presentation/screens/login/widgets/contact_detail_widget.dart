@@ -46,7 +46,7 @@ class _ContactDetailWidgetState extends State<ContactDetailWidget> {
           children: [
         
             SizedBox(height:  size.height * .03),
-      
+
             const Text("Ingresa tu informacion Personal", style: TextStyle(fontWeight: FontWeight.bold)),
             
             SizedBox(height:  size.height * .03),
@@ -138,7 +138,7 @@ class _ContactDetailWidgetState extends State<ContactDetailWidget> {
               },
               child: const Text("Continuar", style: TextStyle(color: TaxiColors.white)),              
             )
-           
+
           ],
         ),
       ),

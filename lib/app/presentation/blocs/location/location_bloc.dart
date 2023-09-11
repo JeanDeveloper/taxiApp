@@ -31,24 +31,24 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   }
 }
 
-  LocationState _failureOrPosition(Either<Failure, Position> failureOrPosition){
-    return failureOrPosition.fold(
-      (failure) => LocationError(_mapFailureToMessage(failure)), 
-      (position) {
-        return LocationLoaded(position);
-      }
-    );
-  }
-
-  String _mapFailureToMessage( Failure failure ){
-    switch (failure.runtimeType) {
-      case LocationFailure:
-        return failure.message;
-      case ServerFailure:
-        return "Ha ocurrido un error, Por favor intenta denuevo";
-      case AuthFailure:
-        return failure.message;
-      default:
-        return "Error inesperado";
+LocationState _failureOrPosition(Either<Failure, Position> failureOrPosition){
+  return failureOrPosition.fold(
+    (failure) => LocationError(_mapFailureToMessage(failure)), 
+    (position) {
+      return LocationLoaded(position);
     }
+  );
+}
+
+String _mapFailureToMessage( Failure failure ){
+  switch (failure.runtimeType) {
+    case LocationFailure:
+      return failure.message;
+    case ServerFailure:
+      return "Ha ocurrido un error, Por favor intenta denuevo";
+    case AuthFailure:
+      return failure.message;
+    default:
+      return "Error inesperado";
   }
+}
