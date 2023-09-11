@@ -7,4 +7,4 @@ sealed class LocationEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetLocationEvent extends LocationEvent {}
+final class GetLocationEvent extends LocationEvent {}

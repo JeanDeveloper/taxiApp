@@ -50,7 +50,7 @@ class _DniDocumentWidgetState extends State<DniDocumentWidget> {
                           if( photo != null){
                             setState(() {
                               pathImage  = photo.path;
-                              authBloc.photoProfile = photo;
+                              authBloc.photoDocument = photo;
                               Navigator.of(context).pop();
                             });
                           }
@@ -59,7 +59,7 @@ class _DniDocumentWidgetState extends State<DniDocumentWidget> {
                         child: const Text("Camara"),
                       ),                        
                       TextButton(
-                        onPressed: () async {  
+                        onPressed: () async {
 
                           final ImagePicker picker = ImagePicker();
                           final XFile? image = await picker.pickImage(source: ImageSource.gallery);
@@ -67,7 +67,7 @@ class _DniDocumentWidgetState extends State<DniDocumentWidget> {
                           if( image != null){
                             setState(() {
                               pathImage  = image.path;
-                              authBloc.photoProfile = image;
+                              authBloc.photoDocument = image;
                               Navigator.of(context).pop();
                             });
                           }

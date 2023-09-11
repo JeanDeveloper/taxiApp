@@ -1,23 +1,22 @@
-
-
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:taxi/app/core/errors/failure.dart';
 import 'package:taxi/app/domain/entities/drive.dart';
-import 'package:taxi/app/domain/entities/driver.dart';
 import 'package:taxi/app/domain/entities/iuser.dart';
 import 'package:taxi/app/domain/entities/payout.dart';
-import 'package:taxi/app/domain/usecases/get_state_carousel.dart';
+import 'package:taxi/app/domain/entities/driver.dart';
 import 'package:taxi/app/domain/usecases/get_user.dart';
-import 'package:taxi/app/domain/usecases/save_state_carousel.dart';
 import 'package:taxi/app/domain/usecases/sending_otp.dart';
 import 'package:taxi/app/domain/usecases/upload_file.dart';
 import 'package:taxi/app/domain/usecases/verifing_otp.dart';
+import 'package:taxi/app/domain/usecases/get_state_carousel.dart';
+import 'package:taxi/app/domain/usecases/save_state_carousel.dart';
+import 'package:taxi/driver/domain/entities/upload_file_response.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -103,7 +102,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           stepSelected = stepSelected + 1;
           emit( VerifiedOTPState()) ;
         } else {
-          AuthLoged(usuario);
+          emit(AuthLoged(usuario));
         }
       }
 
@@ -126,24 +125,53 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       if( event is UploadDocEvent ){
 
-        String pathProfile  ="";
-        String pathDocument ="";
-        String pathLicense  ="";
-        String pathCardOwner="";
+        UploadFileResponse? pathProfile;
+        UploadFileResponse? pathDocument;
+        UploadFileResponse? pathLicense;
+        UploadFileResponse? pathCardOwner;
 
         //SUBIR LAS FOTOS DEL REGISTRO.
-
-
         emit( UploadingFileState() );
 
         //PRIMERO COMENZAMOS A SUBIR LA FOTO DE PERFIL DEL CONDUCTOR.
         final failureOrPathUrl = await uploadingFile(File(photoProfile!.path));
 
         failureOrPathUrl.fold(
-          (failure) => emit(UploadedFileErrorState(failure.message)), 
-          (url) {
-            pathProfile = url!;
-            emit(UploadedFileState());
+          (failure) => emit(UploadedFileErrorState(_mapFailureToMessage(failure))), 
+          ( response ) {
+            pathProfile = response!;
+          }
+        );
+
+        //FOTO DEL DOCUMENTO
+        final failureOrPathUrl1 = await uploadingFile(File(photoDocument!.path));
+
+        failureOrPathUrl1.fold(
+          (failure) => UploadedFileErrorState(_mapFailureToMessage(failure)), 
+          ( response ) {
+            pathDocument = response!;
+          }
+        );
+
+
+        //FOTO DE LA LICENCIA
+        final failureOrPathUrl2 = await uploadingFile(File(photoLicense!.path));
+
+        failureOrPathUrl2.fold(
+          (failure) => UploadedFileErrorState(_mapFailureToMessage(failure)), 
+          ( response ) {
+            pathLicense = response!;
+          }
+        );
+
+        //FOTO DE LA TARJETA DE PROPIEDAD
+        final failureOrPathUrl3 = await uploadingFile(File(photoCardOwner!.path));
+
+        failureOrPathUrl3.fold(
+          (failure) => UploadedFileErrorState(_mapFailureToMessage(failure)), 
+          ( response ) {
+            pathCardOwner = response!;
+            emit(AuthLoged(user));
           }
         );
 
@@ -154,24 +182,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
 }
 
-// AuthState _failureOrString(Either<Failure, String?> failureOrString){
-//   return failureOrString.fold(
-//     (failure) => UploadedFileErrorState(_mapFailureToMessage(failure)), 
-//     ( _ ) {
-//       return UploadedFileState();
-//     }
-//   );
-// }
+AuthState _failureOrString(Either<Failure, UploadFileResponse?> failureOrString){
+  return failureOrString.fold(
+    (failure) => UploadedFileErrorState(_mapFailureToMessage(failure)), 
+    ( _ ) {
+      return UploadedFileState();
+    }
+  );
+}
 
-// String _mapFailureToMessage( Failure failure ){
-//   switch (failure.runtimeType) {
-//     case LocationFailure:
-//       return failure.message;
-//     case ServerFailure:
-//       return "Ha ocurrido un error, Por favor intenta denuevo";
-//     case AuthFailure:
-//       return failure.message;
-//     default:
-//       return "Error inesperado";
-//   }
-// }
+String _mapFailureToMessage( Failure failure ){
+  switch (failure.runtimeType) {
+    case LocationFailure:
+      return failure.message;
+    case ServerFailure:
+      return "Ha ocurrido un error, Por favor intenta denuevo";
+    case AuthFailure:
+      return failure.message;
+    default:
+      return "Error inesperado";
+  }
+}

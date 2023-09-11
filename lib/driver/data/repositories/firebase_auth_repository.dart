@@ -1,18 +1,9 @@
-<<<<<<< HEAD
-// import 'package:dartz/dartz.dart';
-// import 'package:taxi/app/core/errors/failure.dart';
-// import 'package:firebase_auth_platform_interface/src/providers/phone_auth.dart';
-// import 'package:firebase_auth_platform_interface/src/firebase_auth_exception.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:io';
-
-=======
-import 'dart:io';
->>>>>>> 16ce41b56c0608940ac18a759c29676257930ac1
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:taxi/app/core/errors/failure.dart';
 import 'package:taxi/driver/data/datasource/auth_datasource.dart';
+import 'package:taxi/driver/domain/entities/upload_file_response.dart';
 import 'package:taxi/driver/domain/repositories/iauth_repository.dart';
 
 class FirebaseAuthRepository extends IAuthRepository{
@@ -42,15 +33,13 @@ class FirebaseAuthRepository extends IAuthRepository{
     UserCredential? user = await authDataSource.verifyOTP(codeNumber, verification);
     return user;
   }
-<<<<<<< HEAD
-=======
 
   @override
-  Future<Either<Failure, String?>> uploadFile(File file) async {
+  Future<Either<Failure, UploadFileResponse?>> uploadFile(File file) async {
 
     try {
-      final pathUrl = await authDataSource.uploadFile(file);
-      return Right(pathUrl);
+      final response = await authDataSource.uploadFile(file);
+      return Right(response);
     }on Exception catch(ex){
       return Left(AuthFailure(message: ex.toString() ));
     }
@@ -78,13 +67,6 @@ class FirebaseAuthRepository extends IAuthRepository{
   //   );
 
   // }
->>>>>>> 16ce41b56c0608940ac18a759c29676257930ac1
-  
-  @override
-  Future<Either<Failure, String?>> uploadFile(File file) {
-    // TODO: implement uploadFile
-    throw UnimplementedError();
-  }
 
 
 }

@@ -25,7 +25,7 @@ final class SavedPayoutDetalState extends AuthState{}
 final class AuthLoading extends AuthState{}
 
 final class AuthLoged extends AuthState{
-  final IUser user;
+  final IUser? user;
   const AuthLoged(this.user);
 }
 

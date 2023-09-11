@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi/app/core/injections/injections.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:taxi/driver/presentation/widgets/widgets.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:taxi/app/presentation/blocs/location/location_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -30,8 +32,7 @@ class HomeScreenInit extends StatefulWidget {
 }
 
 class _HomeScreenInitState extends State<HomeScreenInit> {
-  final Completer<GoogleMapController> _controller =
-      Completer<GoogleMapController>();
+  final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
 
   static const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(-9.084479755169513, -78.57767754372975),
@@ -39,72 +40,87 @@ class _HomeScreenInitState extends State<HomeScreenInit> {
   );
 
   static const CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(-9.084479755169513, -78.57767754372975),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
+    bearing: 192.8334901395799,
+    target: LatLng(-9.084479755169513, -78.57767754372975),
+    tilt: 59.440717697143555,
+    zoom: 19.151926040649414
+  );
 
 
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<LocationBloc>(context).add(GetLocationEvent());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      BlocProvider.of<LocationBloc>(context).add(GetLocationEvent());
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          BlocBuilder<LocationBloc, LocationState>(
-            builder: (context, state) {
+    return BlocListener<LocationBloc, LocationState>(
+      listener: (context, state) {
+          if( state is LocationError){
+            return showTopSnackBar(
+              Overlay.of(context),
+              CustomSnackBar.error(
+                message: state.errorMessage
+              ),
+            );
+          }
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            BlocBuilder<LocationBloc, LocationState>(
+              builder: (context, state) {
 
-              if( state is LocationLoading){
-                return const Center(child: CircularProgressIndicator());
-              }
+                print(state);
 
-              if( state is LocationLoaded ){
-                Position pos = state.position;
+                if( state is LocationLoading){
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-                CameraPosition currentPos = CameraPosition(
-                  target: LatLng(pos.latitude, pos.longitude),
-                  zoom: 14.4746,
-                );
+                if( state is LocationLoaded ){
+                  Position posi = state.pos;
+
+                  CameraPosition currentPos = CameraPosition(
+                    target: LatLng(posi.latitude, posi.longitude),
+                    zoom: 14.4746,
+                  );
+
+                  return GoogleMap(
+                    mapType: MapType.normal,
+                    initialCameraPosition: currentPos,
+                    onMapCreated: (GoogleMapController controller) {
+                      _controller.complete(controller);
+                    },
+                  );
+                }
+
+                if( state is LocationError){
+                  return const Center(child: Text('UY QUE PENAA'));
+                }
 
                 return GoogleMap(
                   mapType: MapType.normal,
-                  initialCameraPosition: currentPos,
+                  initialCameraPosition: _kGooglePlex,
                   onMapCreated: (GoogleMapController controller) {
                     _controller.complete(controller);
                   },
                 );
-                
-              }
 
-              if( state is LocationError){
-                return Text(state.errorMessage);
-              }
-
-              return GoogleMap(
-                mapType: MapType.normal,
-                initialCameraPosition: _kGooglePlex,
-                onMapCreated: (GoogleMapController controller) {
-                  _controller.complete(controller);
-                },
-              );
-
-
-            },
-          ),
-          const ButtonDrawer(),
-          ButtonPositionCurrent(gmcontroller: _controller),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _goOnline,
-        label: const Text('Conectarse'),
-        icon: const Icon(Icons.play_circle),
-      ),
+              },
+            ),
+            const ButtonDrawer(),
+            ButtonPositionCurrent(gmcontroller: _controller),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: _goOnline,
+          label: const Text('Conectarse'),
+          icon: const Icon(Icons.play_circle),
+        ),
+      )
     );
   }
 

@@ -17,7 +17,7 @@ class LocalStorageDataSource extends ILocalStorageDataSource{
 
     if( user != null ){
       return Driver(
-        uid: user.uid, 
+        uid: user.uid,  
         name: user.displayName?? "", 
       );
     }

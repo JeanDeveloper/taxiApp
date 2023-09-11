@@ -20,7 +20,7 @@ final class RegisterLoaded extends ModelState {
 
 }
 
-class RegisterError extends ModelState{
+final class RegisterError extends ModelState{
   final String message;
   const RegisterError(this.message);
 }

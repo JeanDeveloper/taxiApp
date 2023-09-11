@@ -50,7 +50,7 @@ class _LicenseDocumentWidgetState extends State<LicenseDocumentWidget> {
                           if( photo != null){
                             setState(() {
                               pathImage  = photo.path;
-                              authBloc.photoProfile = photo;
+                              authBloc.photoLicense = photo;
                               Navigator.of(context).pop();
                             });
                           }
@@ -67,7 +67,7 @@ class _LicenseDocumentWidgetState extends State<LicenseDocumentWidget> {
                           if( image != null){
                             setState(() {
                               pathImage  = image.path;
-                              authBloc.photoProfile = image;
+                              authBloc.photoLicense = image;
                               Navigator.of(context).pop();
                             });
                           }

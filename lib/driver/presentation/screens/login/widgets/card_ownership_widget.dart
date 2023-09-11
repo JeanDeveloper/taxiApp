@@ -50,7 +50,7 @@ class _CardOwnerDocumentWidgetState extends State<CardOwnerDocumentWidget> {
                           if( photo != null){
                             setState(() {
                               pathImage  = photo.path;
-                              authBloc.photoProfile = photo;
+                              authBloc.photoCardOwner = photo;
 
                               Navigator.of(context).pop();
                             });
@@ -68,7 +68,7 @@ class _CardOwnerDocumentWidgetState extends State<CardOwnerDocumentWidget> {
                           if( image != null){
                             setState(() {
                               pathImage  = image.path;
-                              authBloc.photoProfile = image;
+                              authBloc.photoCardOwner = image;
                               Navigator.of(context).pop();
                             });
                           }

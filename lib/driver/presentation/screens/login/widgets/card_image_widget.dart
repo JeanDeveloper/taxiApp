@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:taxi/app/core/themes/colors.dart';
+import 'package:taxi/app/presentation/blocs/auth/auth_bloc.dart';
 
 class CardImageWidget extends StatefulWidget {
   const CardImageWidget ({super.key});
@@ -17,6 +19,8 @@ class _CardImageWidgetState extends State<CardImageWidget> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final authBloc = BlocProvider.of<AuthBloc>(context);
+    
     return SizedBox(
       width: size.width * .4,
       height: size.height * .2,
@@ -49,19 +53,24 @@ class _CardImageWidgetState extends State<CardImageWidget> {
               icon: const Icon(Icons.add_circle_rounded, color: TaxiColors.verylightBlue,),
               iconSize: 40,
               onPressed: (){
+
                 showModalBottomSheet(
                   context: context,
                   builder: (BuildContext context) {
+
                     return SizedBox(
                       width: size.width ,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
+
                           const Text(
                             'Elige una modalidad',
                             style: TextStyle(fontSize: 18.0),
                           ),
+
                           const SizedBox(height: 16.0),
+                          
                           TextButton(
                             onPressed: () async { 
 
@@ -71,6 +80,7 @@ class _CardImageWidgetState extends State<CardImageWidget> {
                               if( photo != null){
                                 setState(() {
                                   pathImage  = photo.path;
+                                  authBloc.photoProfile = photo;
                                   Navigator.of(context).pop();
                                 });
                               }
@@ -78,8 +88,9 @@ class _CardImageWidgetState extends State<CardImageWidget> {
                             },
                             child: const Text("Camara"),
                           ),                        
+                          
                           TextButton(
-                            onPressed: () async {  
+                            onPressed: () async { 
 
                               final ImagePicker picker = ImagePicker();
                               final XFile? image = await picker.pickImage(source: ImageSource.gallery);
@@ -87,6 +98,7 @@ class _CardImageWidgetState extends State<CardImageWidget> {
                               if( image != null){
                                 setState(() {
                                   pathImage  = image.path;
+                                  authBloc.photoProfile = image;
                                   Navigator.of(context).pop();
                                 });
                               }
@@ -94,11 +106,14 @@ class _CardImageWidgetState extends State<CardImageWidget> {
                             },
                             child: const Text("Galeria"),
                           ),   
+
                         ],
                       ),
                     );
+
                   }
                 );
+
 
               },
             ),

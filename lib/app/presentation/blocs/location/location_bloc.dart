@@ -15,17 +15,13 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     on<LocationEvent>((event, emit) async {
 
       if( event is GetLocationEvent){
-
         emit(LocationLoading());
-
         final positions = await iLocationRepository.getCurrentLocation();
-
-        emit(_failureOrPosition( positions ));
-
+        positions.fold(
+          (failure) => emit(LocationError( _mapFailureToMessage(failure) )), 
+          (position) => emit(LocationLoaded(position)),
+        );    
       }
-
-
-
 
     });
   }
@@ -33,10 +29,8 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
 LocationState _failureOrPosition(Either<Failure, Position> failureOrPosition){
   return failureOrPosition.fold(
-    (failure) => LocationError(_mapFailureToMessage(failure)), 
-    (position) {
-      return LocationLoaded(position);
-    }
+    (failure) => LocationError( _mapFailureToMessage(failure) ), 
+    (position) => LocationLoaded(position)
   );
 }
 

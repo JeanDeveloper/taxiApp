@@ -35,15 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
           // final user = state.user;
 
           Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ( _ ) =>  const HomeScreen()));
-
-          // if( user.codTipoUsuario == 1 ){
-          //   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ( _ ) =>  const HomeScreen()));
-          // } if( user.codTipoUsuario == 2 ){
-          //   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ( _ ) =>  const HomeScreen()));
-          // }if( user.codTipoUsuario == 4 ){
-          //   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: ( _ ) =>  const HomeScreenContract()));
-          // }
-
+          
         }
 
         if( state is AuthUnvalidated ){

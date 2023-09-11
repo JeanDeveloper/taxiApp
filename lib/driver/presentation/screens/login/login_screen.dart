@@ -96,20 +96,16 @@ class LoginScreen extends StatelessWidget {
                       return const UpdateDocumentWidget();
                     }
 
-                    // if (state is AuthLoged) {
-                    //   Future.microtask(() =>Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const HomeScreen())));
-                    // }
-                    
-
-                    // if (state is UploadedDocState) {
-                    //   return const UpdateDocumentWidget();
-                    // }
+                    if (state is AuthLoged) {
+                      Future.microtask(() =>Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const HomeScreen())));
+                    }
 
                     return SizedBox(
                       width: double.infinity,
                       height: size.height * .95,
                       child: const Center(child: CircularProgressIndicator())
                     );
+
                   },
                 ),
 

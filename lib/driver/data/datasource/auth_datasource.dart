@@ -3,9 +3,10 @@ import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:googleapis/storage/v1.dart';
-import 'package:googleapis/storage/v1.dart';
-import 'package:googleapis_auth/auth_io.dart';
-import 'package:googleapis_auth/googleapis_auth.dart';
+import 'package:googleapis_auth/auth_io.dart' ;
+import 'package:http/http.dart' as http;
+import 'package:taxi/driver/data/models/upload_file_model.dart';
+import 'package:taxi/driver/domain/entities/upload_file_response.dart';
 
 abstract class IAuthDataSource{
 
@@ -20,7 +21,7 @@ abstract class IAuthDataSource{
 
   Future<UserCredential?> verifyOTP(String codeNumber, String verification);
 
-  Future<String?> uploadFile(File file);
+  Future<UploadFileResponse?> uploadFile(File file);
 
 }
 
@@ -71,21 +72,8 @@ class FirebaseDataSource extends IAuthDataSource{
   }
   
   @override
-  Future<String?> uploadFile(File file) async {
-<<<<<<< HEAD
-    try { 
-      final storageReference = _storage.child('sertech/sudo-app/image.jpg');
-      final uploadTask = storageReference.putFile(file);
-      final snapshot = await uploadTask.whenComplete(() {});
-      final downloadURL = await snapshot.ref.getDownloadURL();
-      return downloadURL;
-    } catch (e) {
-      print('Error al cargar el archivo: $e');
-      return null;
-    }
-=======
+  Future<UploadFileResponse?> uploadFile(File file) async {
 
-  // Lee el archivo JSON de credenciales de servicio
   final jsonCredentials = File('rock-verbena.json');
   final credentials = ServiceAccountCredentials.fromJson({
     "type": "service_account",
@@ -100,52 +88,33 @@ class FirebaseDataSource extends IAuthDataSource{
     "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/sertech%40rock-verbena-359222.iam.gserviceaccount.com",
     "universe_domain": "googleapis.com"  
   });
+  final client = await clientViaServiceAccount(
+    credentials,
+    ['https://www.googleapis.com/auth/cloud-platform']
+  ); //[ StorageApi.devstorageReadWriteScope ]
 
-  // Autentica con Google Cloud Storage
-  final client = await clientViaServiceAccount(credentials, [ StorageApi.devstorageReadWriteScope ]);
+  const bucketName = 'sertech';
 
-  // Configura la instancia del servicio de almacenamiento
-  final storage = StorageApi(client);
+  final fileName = file.uri.pathSegments.last;
 
-  // Nombre del bucket donde deseas cargar el archivo
-  const bucketName = 'sertech/sudo-app';
-
-  // Nombre del objeto en el bucket
-  final objectName = file.path.split("/").last;
-
-  final fileInByte = await file.readAsBytes();
-
-  final objectFile= Object(
-
+  final response = await http.post(
+    Uri.parse('https://storage.googleapis.com/upload/storage/v1/b/$bucketName/o?uploadType=media&name=$fileName'),
+    headers: {
+      HttpHeaders.authorizationHeader: 'Bearer ${client.credentials.accessToken.data}',
+      HttpHeaders.contentTypeHeader: 'application/octet-stream',
+    },
+    body: file.readAsBytesSync(),
   );
 
+  if (response.statusCode == 200) {
+    final responseModel = uploadFileResponseModelFromJson(response.body);
+    return responseModel;
 
-  // Object
+  } 
+  // else {
+  //   print('Error al cargar el archivo. Código de respuesta: ${response.statusCode}');
+  // }
 
-  // Carga el archivo al bucket
-  final uploadMedia = await storage.objects.insert(
-    objectFile,
-    bucketName,
-    name: objectName,
-  );
-
-  print(uploadMedia.mediaLink);
-
-  print('Archivo cargado con éxito.');
-
-    // try {
-    //   _storage.
-    //   final storageReference = _storage.child('sertech/sudo-app/image.jpg');
-    //   final uploadTask = storageReference.putFile(file);
-    //   final snapshot = await uploadTask.whenComplete(() {});
-    //   final downloadURL = await snapshot.ref.getDownloadURL();
-    //   return downloadURL;
-    // } catch (e) {
-    //   print('Error al cargar el archivo: $e');
-    //   return null;
-    // }
-
->>>>>>> 16ce41b56c0608940ac18a759c29676257930ac1
   }
 
 }
