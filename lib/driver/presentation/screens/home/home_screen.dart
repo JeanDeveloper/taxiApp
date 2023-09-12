@@ -32,19 +32,6 @@ class HomeScreenInit extends StatefulWidget {
 }
 
 class _HomeScreenInitState extends State<HomeScreenInit> {
-  final Completer<GoogleMapController> _controller = Completer<GoogleMapController>();
-
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(-9.084479755169513, -78.57767754372975),
-    zoom: 14.4746,
-  );
-
-  static const CameraPosition _kLake = CameraPosition(
-    bearing: 192.8334901395799,
-    target: LatLng(-9.084479755169513, -78.57767754372975),
-    tilt: 59.440717697143555,
-    zoom: 19.151926040649414
-  );
 
 
   @override
@@ -52,11 +39,21 @@ class _HomeScreenInitState extends State<HomeScreenInit> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       BlocProvider.of<LocationBloc>(context).add(GetLocationEvent());
+      final locationBloc = BlocProvider.of<LocationBloc>(context);
+       locationBloc.positionStream = Geolocator.getPositionStream().listen(
+        (pos) { 
+          goToPosition(pos, locationBloc);
+          
+        }
+      ) ;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+
+    final locationBloc = BlocProvider.of<LocationBloc>(context);
+
     return BlocListener<LocationBloc, LocationState>(
       listener: (context, state) {
           if( state is LocationError){
@@ -69,6 +66,7 @@ class _HomeScreenInitState extends State<HomeScreenInit> {
           }
       },
       child: Scaffold(
+        key: locationBloc.key,
         body: Stack(
           children: [
             BlocBuilder<LocationBloc, LocationState>(
@@ -82,7 +80,6 @@ class _HomeScreenInitState extends State<HomeScreenInit> {
 
                 if( state is LocationLoaded ){
                   Position posi = state.pos;
-
                   CameraPosition currentPos = CameraPosition(
                     target: LatLng(posi.latitude, posi.longitude),
                     zoom: 14.4746,
@@ -92,31 +89,27 @@ class _HomeScreenInitState extends State<HomeScreenInit> {
                     mapType: MapType.normal,
                     initialCameraPosition: currentPos,
                     onMapCreated: (GoogleMapController controller) {
-                      _controller.complete(controller);
+                      // _controller.complete(controller);
                     },
+                    myLocationEnabled: true,
                   );
+  
                 }
 
                 if( state is LocationError){
                   return const Center(child: Text('UY QUE PENAA'));
                 }
 
-                return GoogleMap(
-                  mapType: MapType.normal,
-                  initialCameraPosition: _kGooglePlex,
-                  onMapCreated: (GoogleMapController controller) {
-                    _controller.complete(controller);
-                  },
-                );
+                return const Center(child: CircularProgressIndicator());
 
               },
             ),
             const ButtonDrawer(),
-            ButtonPositionCurrent(gmcontroller: _controller),
+            ButtonPositionCurrent(gmcontroller: locationBloc.mapController),
           ],
         ),
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: _goOnline,
+          onPressed: (){},
           label: const Text('Conectarse'),
           icon: const Icon(Icons.play_circle),
         ),
@@ -124,14 +117,17 @@ class _HomeScreenInitState extends State<HomeScreenInit> {
     );
   }
 
-  Future<void> _goOnline() async {
-    print("Taxi en linea");
-    final GoogleMapController controller = await _controller.future;
-    await controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
+  Future<void> goToPosition(Position pos, LocationBloc locationBloc) async {
+    final GoogleMapController controller = await locationBloc.mapController.future;
+
+      await controller.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(
+          bearing: 0,
+          target: LatLng(pos.latitude, pos.longitude),
+          tilt: 59,
+          zoom: 17
+        )
+      ));
   }
 
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    await controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
-  }
 }

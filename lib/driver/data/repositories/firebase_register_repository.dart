@@ -1,7 +1,9 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:taxi/app/core/errors/exceptions.dart';
 import 'package:taxi/app/core/errors/failure.dart';
+import 'package:taxi/app/domain/entities/drive.dart';
+import 'package:taxi/app/domain/entities/iuser.dart';
+import 'package:taxi/app/domain/entities/payout.dart';
 import 'package:taxi/driver/data/datasource/register_datasource.dart';
 import 'package:taxi/driver/domain/entities/color_vehicle.dart';
 import 'package:taxi/driver/domain/entities/model_vehicle.dart';
@@ -35,5 +37,19 @@ class FirebaseRegisterRepository extends IRegisterRepository{
       return const Left(ServerFailure(message: "Ha ocurrido un problema en el servidor"));
     } 
   }
+
+  @override
+  Future<Either<Failure, void>> registerData( IUser user, Drive drive, Payout payout ) async {
+    try {
+      final response = await registerDataSource.registerData(user, drive, payout);
+      return Right(response);
+    }on AuthException catch(auth){
+      return Left(AuthFailure(message: auth.message ));
+    } on ServerException {
+      return const Left(ServerFailure(message: "Ha ocurrido un problema en el servidor"));
+    } 
+  }
+  
+
 
 }

@@ -6,6 +6,7 @@ import 'package:taxi/app/domain/repositories/ilocal_storage_repository.dart';
 import 'package:taxi/app/domain/repositories/ilocation_repository.dart';
 import 'package:taxi/app/domain/usecases/get_state_carousel.dart';
 import 'package:taxi/app/domain/usecases/get_user.dart';
+import 'package:taxi/app/domain/usecases/geting_location.dart';
 import 'package:taxi/app/domain/usecases/save_state_carousel.dart';
 import 'package:taxi/app/domain/usecases/sending_otp.dart';
 import 'package:taxi/app/domain/usecases/upload_file.dart';
@@ -21,6 +22,7 @@ import 'package:taxi/driver/domain/repositories/iauth_repository.dart';
 import 'package:taxi/driver/domain/repositories/iregister_repository.dart';
 import 'package:taxi/driver/domain/usecases/get_colors.dart';
 import 'package:taxi/driver/domain/usecases/get_models.dart';
+import 'package:taxi/driver/domain/usecases/register_data.dart';
 import 'package:taxi/driver/presentation/blocs/color/color_bloc.dart';
 import 'package:taxi/driver/presentation/blocs/register/model_bloc.dart';
 final sl = GetIt.instance;
@@ -28,12 +30,13 @@ final sl = GetIt.instance;
 Future<void> init() async {
 
   //INJECTIONS FOR AUTH BLOC
-  sl.registerLazySingleton(() => AuthBloc(sl(), sl(), sl(), sl(), sl(), sl()));
+  sl.registerLazySingleton(() => AuthBloc(sl(), sl(), sl(), sl(), sl(), sl(), sl()));
   sl.registerFactory<IAuthRepository>(() => FirebaseAuthRepository(sl()));
   sl.registerFactory<IAuthDataSource>(() =>  FirebaseDataSource());
   sl.registerFactory(() => SendingOTP(sl()));
   sl.registerFactory(() => VerifingOTP(sl()));
   sl.registerFactory(() => UploadingFileCU(sl()));
+  sl.registerFactory(() => RegisterData(sl()));
   
   sl.registerFactory<ILocalStorageRepository>(() => LocalStorageRepository(sl()));
   sl.registerFactory<ILocalStorageDataSource>(() => LocalStorageDataSource());
@@ -53,5 +56,6 @@ Future<void> init() async {
   sl.registerFactory<ILocationDataSource>(() =>  GoogleMapsDataSource());
   sl.registerFactory<ILocationRepository>(() =>  GeolocatorLocationRepository(sl()));
   sl.registerLazySingleton(() => LocationBloc(sl()));
+  sl.registerFactory(() => GetingLocation( sl()) );
 
 }

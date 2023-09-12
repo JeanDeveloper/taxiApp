@@ -6,28 +6,12 @@ import 'package:taxi/app/presentation/blocs/auth/auth_bloc.dart';
 import 'package:taxi/driver/presentation/screens/login/widgets/widgets.dart';
 import 'package:taxi/driver/presentation/screens/screens.dart';
 
-// class LoginScreenInit extends StatelessWidget {
-//   const LoginScreenInit({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-
-//     return MultiBlocProvider(
-//       providers: [
-//         // BlocProvider(create: (_) => sl<AuthBloc>()),
-//       ],
-//       child: const LoginScreen(),
-//     );
-
-//   }
-
-// }
-
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+
     final size = MediaQuery.of(context).size;
     final autBloc = BlocProvider.of<AuthBloc>(context);
 
@@ -97,7 +81,7 @@ class LoginScreen extends StatelessWidget {
                     }
 
                     if (state is AuthLoged) {
-                      Future.microtask(() =>Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const HomeScreen())));
+                      Future.microtask(() => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const HomeScreen())));
                     }
 
                     return SizedBox(

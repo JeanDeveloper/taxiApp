@@ -7,15 +7,12 @@ import 'package:taxi/app/core/themes/colors.dart';
 import 'package:taxi/app/core/injections/injections.dart';
 import 'package:taxi/app/presentation/blocs/auth/auth_bloc.dart';
 
-
-
 class Taxi extends StatelessWidget  {
 
   const Taxi({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => sl<AuthBloc>()),
@@ -24,7 +21,6 @@ class Taxi extends StatelessWidget  {
       ], 
       child: const TaxiApp(),
     );
-
   }
 
 }

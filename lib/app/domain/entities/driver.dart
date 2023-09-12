@@ -13,6 +13,7 @@ class Driver extends IUser {
   String? email;
   String? documentPath;
   String? photoPath;
+  String? licensePath;
 
   Driver({
     required this.uid,
@@ -25,6 +26,7 @@ class Driver extends IUser {
     this.email,
     this.documentPath,
     this.photoPath,
+    this.licensePath,
   });
   
 }

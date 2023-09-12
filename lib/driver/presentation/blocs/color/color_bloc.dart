@@ -16,11 +16,9 @@ class ColorBloc extends Bloc<ColorEvent, ColorState> {
 
 
       if( event is GetColorEvent) {
-
         emit(ColorLoading());
         final failureOrModel =  await getColors();
         emit(_failureOrColors(failureOrModel));
-
       }
 
     });

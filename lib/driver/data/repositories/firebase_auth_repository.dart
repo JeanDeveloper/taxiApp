@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:taxi/app/core/errors/failure.dart';
+import 'package:taxi/driver/core/constants/constants.dart';
 import 'package:taxi/driver/data/datasource/auth_datasource.dart';
 import 'package:taxi/driver/domain/entities/upload_file_response.dart';
 import 'package:taxi/driver/domain/repositories/iauth_repository.dart';
@@ -35,10 +36,10 @@ class FirebaseAuthRepository extends IAuthRepository{
   }
 
   @override
-  Future<Either<Failure, UploadFileResponse?>> uploadFile(File file) async {
+  Future<Either<Failure, UploadFileResponse?>> uploadFile(File file, PhotoType phototype) async {
 
     try {
-      final response = await authDataSource.uploadFile(file);
+      final response = await authDataSource.uploadFile(file, phototype);
       return Right(response);
     }on Exception catch(ex){
       return Left(AuthFailure(message: ex.toString() ));

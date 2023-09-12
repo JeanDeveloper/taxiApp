@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -16,7 +15,9 @@ import 'package:taxi/app/domain/usecases/upload_file.dart';
 import 'package:taxi/app/domain/usecases/verifing_otp.dart';
 import 'package:taxi/app/domain/usecases/get_state_carousel.dart';
 import 'package:taxi/app/domain/usecases/save_state_carousel.dart';
+import 'package:taxi/driver/core/constants/constants.dart';
 import 'package:taxi/driver/domain/entities/upload_file_response.dart';
+import 'package:taxi/driver/domain/usecases/register_data.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -33,13 +34,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   int stepSelected = 0;
   String? verification;
   String phone="";
-  IUser? user;
+  Driver? user;
   Drive? drive;
   Payout? payout;
   XFile? photoProfile;
   XFile? photoDocument;
   XFile? photoLicense;
   XFile? photoCardOwner;
+  RegisterData registerUser;
 
   AuthBloc(
     this.sendingOTP, 
@@ -47,14 +49,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     this.getUser, 
     this.getStateCarousel,
     this.saveStateCarousel,
-    this.uploadingFile
+    this.uploadingFile,
+    this.registerUser,
   ) : super(AuthInitial()) {
     on<AuthEvent>((event, emit) async {
 
       if( event is StartValidation ){
         final userTemp = await getUser();
         if( userTemp != null ){
-          user = userTemp;
+          user = userTemp as Driver;
           emit(AuthLoged(userTemp));
         }else{
           bool isViewCarousel = await getStateCarousel();
@@ -92,7 +95,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if( event is VerifyOTPEvent ) {
         emit(VerifyingOTPState());
         final UserCredential? userTemp = await verifyingOTP( event.codeNumber, verification ?? '' );
-        final IUser usuario = Driver(
+        final Driver usuario = Driver(
           uid: userTemp!.user!.uid,
           phone: userTemp.user!.phoneNumber,
         );
@@ -134,46 +137,55 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit( UploadingFileState() );
 
         //PRIMERO COMENZAMOS A SUBIR LA FOTO DE PERFIL DEL CONDUCTOR.
-        final failureOrPathUrl = await uploadingFile(File(photoProfile!.path));
+        final failureOrPathUrl = await uploadingFile(File(photoProfile!.path), userPhotoTypes[0]);
 
         failureOrPathUrl.fold(
-          (failure) => emit(UploadedFileErrorState(_mapFailureToMessage(failure))), 
+          ( failure ) => emit(UploadedFileErrorState(_mapFailureToMessage(failure))), 
           ( response ) {
-            pathProfile = response!;
+            pathProfile     = response!;
+            user?.photoPath = pathProfile?.id;
           }
         );
 
         //FOTO DEL DOCUMENTO
-        final failureOrPathUrl1 = await uploadingFile(File(photoDocument!.path));
+        final failureOrPathUrl1 = await uploadingFile(File(photoDocument!.path), userPhotoTypes[1]);
 
         failureOrPathUrl1.fold(
           (failure) => UploadedFileErrorState(_mapFailureToMessage(failure)), 
           ( response ) {
             pathDocument = response!;
+            user?.documentPath = pathDocument?.id;
           }
         );
 
-
         //FOTO DE LA LICENCIA
-        final failureOrPathUrl2 = await uploadingFile(File(photoLicense!.path));
+        final failureOrPathUrl2 = await uploadingFile(File(photoLicense!.path), userPhotoTypes[2]);
 
         failureOrPathUrl2.fold(
           (failure) => UploadedFileErrorState(_mapFailureToMessage(failure)), 
           ( response ) {
             pathLicense = response!;
+            user?.licensePath = pathLicense?.id;
           }
         );
 
         //FOTO DE LA TARJETA DE PROPIEDAD
-        final failureOrPathUrl3 = await uploadingFile(File(photoCardOwner!.path));
+        final failureOrPathUrl3 = await uploadingFile(File(photoCardOwner!.path), drivePhotoTypes[1]);
 
         failureOrPathUrl3.fold(
           (failure) => UploadedFileErrorState(_mapFailureToMessage(failure)), 
           ( response ) {
             pathCardOwner = response!;
-            emit(AuthLoged(user));
+            drive?.documentPath = pathCardOwner?.id; 
+            
           }
         );
+
+        //AHORA VAMOS A GUARDAR EL USUARIO AL FIRESTORE
+
+        await registerUser(user!, drive!, payout!);
+
+        emit(AuthLoged(user));
 
       }
 

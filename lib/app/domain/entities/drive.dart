@@ -1,18 +1,20 @@
 import 'package:equatable/equatable.dart';
+import 'package:taxi/driver/domain/entities/color_vehicle.dart';
+import 'package:taxi/driver/domain/entities/model_vehicle.dart';
 
 class Drive extends Equatable{
 
-  String? idColor;
+  ColorVehicle? color;
   String? documentPath;
-  String? idModel;
+  ModelVehicle? model;
   String? plate;
   String? year;
   String? idUser;
 
   Drive({
-    this.idColor,
+    this.color,
     this.documentPath,
-    this.idModel,
+    this.model,
     this.plate,
     this.year,
     this.idUser,
@@ -20,7 +22,7 @@ class Drive extends Equatable{
   
   @override
   List<Object?> get props => [
-    idColor, documentPath, idModel, plate, year, idUser
+    color, documentPath, model, plate, year, idUser
   ];
   
 }

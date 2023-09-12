@@ -8,6 +8,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:taxi/app/core/errors/failure.dart';
+import 'package:taxi/driver/core/constants/constants.dart';
 import 'package:taxi/driver/domain/entities/upload_file_response.dart';
 
 abstract class IAuthRepository{
@@ -24,5 +25,6 @@ abstract class IAuthRepository{
 
   Future<UserCredential?> verifyOTP(String codeNumber, String verification);
   
-  Future<Either<Failure, UploadFileResponse?>> uploadFile(File file ) ;
+  Future<Either<Failure, UploadFileResponse?>> uploadFile( File file, PhotoType photoType );
+
 }

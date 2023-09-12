@@ -179,8 +179,8 @@ class _CarDetailWidgetState extends State<CarDetailWidget> {
                 Drive drive = Drive(
                   plate   : plateNumber.text,
                   year    : yearVehicle.text,
-                  idModel : (_selectedModel == null ) ? "" : _selectedModel!.id,
-                  idColor : ( _selectedColor == null ) ? "" : _selectedColor!.id,
+                  model :   _selectedModel,
+                  color : _selectedColor,
                   idUser  : user.uid,
                 );
                 BlocProvider.of<AuthBloc>(context).add(SaveDriveDetailEvent(drive));
