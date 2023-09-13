@@ -9,7 +9,6 @@ class ButtonDrawer extends StatelessWidget {
       child: Container(
         alignment: Alignment.topLeft,
         margin: const EdgeInsets.all(20),
-        
         child: IconButton(
           icon: const Icon(Icons.view_headline_rounded, size: 35),
           style: const ButtonStyle(
@@ -18,7 +17,6 @@ class ButtonDrawer extends StatelessWidget {
           ),
           onPressed: (){}, 
         ),
-    
       ),
     );
   }

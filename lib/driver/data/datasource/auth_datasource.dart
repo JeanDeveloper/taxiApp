@@ -1,11 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:io';
 
-// import 'package:firebase_storage/firebase_storage.dart';
 import 'package:googleapis_auth/auth_io.dart' ;
 import 'package:http/http.dart' as http;
 import 'package:taxi/driver/core/constants/constants.dart';
-// import 'package:taxi/app/domain/entities/iuser.dart';
 import 'package:taxi/driver/data/models/upload_file_model.dart';
 import 'package:taxi/driver/domain/entities/upload_file_response.dart';
 
@@ -74,7 +72,7 @@ class FirebaseDataSource extends IAuthDataSource{
   @override
   Future<UploadFileResponse?> uploadFile(File file, photoType) async {
 
-    final jsonCredentials = File('rock-verbena.json');
+    // final jsonCredentials = File('rock-verbena.json');
     final credentials = ServiceAccountCredentials.fromJson({
       "type": "service_account",
       "project_id": "rock-verbena-359222",
@@ -120,6 +118,7 @@ class FirebaseDataSource extends IAuthDataSource{
       final responseModel = uploadFileResponseModelFromJson(response.body);
       return responseModel;
     }
+    return null;
 
   }
   
