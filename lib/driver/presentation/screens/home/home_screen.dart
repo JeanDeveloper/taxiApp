@@ -56,14 +56,14 @@ class _HomeScreenInitState extends State<HomeScreenInit> {
 
     return BlocListener<LocationBloc, LocationState>(
       listener: (context, state) {
-          if( state is LocationError){
-            return showTopSnackBar(
-              Overlay.of(context),
-              CustomSnackBar.error(
-                message: state.errorMessage
-              ),
-            );
-          }
+        if( state is LocationError){
+          return showTopSnackBar(
+            Overlay.of(context),
+            CustomSnackBar.error(
+              message: state.errorMessage
+            ),
+          );
+        }
       },
       child: Scaffold(
         key: locationBloc.key,
