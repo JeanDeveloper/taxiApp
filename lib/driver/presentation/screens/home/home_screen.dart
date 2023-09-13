@@ -33,14 +33,13 @@ class HomeScreenInit extends StatefulWidget {
 
 class _HomeScreenInitState extends State<HomeScreenInit> {
 
-
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       BlocProvider.of<LocationBloc>(context).add(GetLocationEvent());
       final locationBloc = BlocProvider.of<LocationBloc>(context);
-       locationBloc.positionStream = Geolocator.getPositionStream().listen(
+      locationBloc.positionStream = Geolocator.getPositionStream().listen(
         (pos) { 
           goToPosition(pos, locationBloc);
           
