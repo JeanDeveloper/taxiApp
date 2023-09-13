@@ -35,3 +35,9 @@ class LocationFailure extends Failure{
     required String message
   }): super(message: message);
 }
+
+class GeneralFailure extends Failure{
+  const GeneralFailure({
+    required String message
+  }): super(message: message);
+}

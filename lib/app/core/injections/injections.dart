@@ -14,15 +14,19 @@ import 'package:taxi/app/domain/usecases/verifing_otp.dart';
 import 'package:taxi/app/presentation/blocs/auth/auth_bloc.dart';
 import 'package:taxi/app/presentation/blocs/location/location_bloc.dart';
 import 'package:taxi/driver/data/datasource/auth_datasource.dart';
+import 'package:taxi/driver/data/datasource/geo_fire_datasource.dart';
 import 'package:taxi/driver/data/datasource/location_datasource.dart';
 import 'package:taxi/driver/data/datasource/register_datasource.dart';
 import 'package:taxi/driver/data/repositories/firebase_auth_repository.dart';
+import 'package:taxi/driver/data/repositories/firebase_map_repository.dart';
 import 'package:taxi/driver/data/repositories/firebase_register_repository.dart';
 import 'package:taxi/driver/domain/repositories/iauth_repository.dart';
+import 'package:taxi/driver/domain/repositories/imap_repository.dart';
 import 'package:taxi/driver/domain/repositories/iregister_repository.dart';
 import 'package:taxi/driver/domain/usecases/get_colors.dart';
 import 'package:taxi/driver/domain/usecases/get_models.dart';
 import 'package:taxi/driver/domain/usecases/register_data.dart';
+import 'package:taxi/driver/domain/usecases/register_location.dart';
 import 'package:taxi/driver/presentation/blocs/color/color_bloc.dart';
 import 'package:taxi/driver/presentation/blocs/register/model_bloc.dart';
 final sl = GetIt.instance;
@@ -55,7 +59,12 @@ Future<void> init() async {
 
   sl.registerFactory<ILocationDataSource>(() =>  GoogleMapsDataSource());
   sl.registerFactory<ILocationRepository>(() =>  GeolocatorLocationRepository(sl()));
-  sl.registerLazySingleton(() => LocationBloc(sl()));
+  sl.registerLazySingleton(() => LocationBloc(sl(), sl()));
   sl.registerFactory(() => GetingLocation( sl()) );
+
+  sl.registerFactory<IGeoFireDataSource>(() =>  GeoFireDataSource());
+  sl.registerFactory<IMapRepository>(() =>  FirebaseMapRepository(sl()));
+
+  sl.registerFactory(() => RegisterLocation( sl()) );
 
 }
