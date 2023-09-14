@@ -15,7 +15,7 @@ class GeolocatorLocationRepository implements ILocationRepository {
 
     try {
       final position = await locationDataSource.getCurrentLocation();
-      return Right(position);
+      return Right(position!);
     } on LocationException catch(e){
       return Left(LocationFailure(message: e.message ));
     } 

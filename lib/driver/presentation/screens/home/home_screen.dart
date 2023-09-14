@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:taxi/app/core/utils/map_utils.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:taxi/app/core/injections/injections.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
@@ -34,49 +35,44 @@ class HomeScreenInit extends StatefulWidget {
 class _HomeScreenInitState extends State<HomeScreenInit> {
 
   Set<Marker> _markers = <Marker>{};
-  // late BitmapDescriptor _markerDriver;
+  late BitmapDescriptor _markerDriver;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final locationBloc = BlocProvider.of<LocationBloc>(context);
-      final authBloc = BlocProvider.of<AuthBloc>(context);
-      BlocProvider.of<LocationBloc>(context).add(GetLocationEvent());
-      // MapUtils.createMarketImageFromAsset("assets/png/taxi-little.png").then(
-      //   (result) {
-      //     _markerDriver = result;
-      //   }
-      // );
+      final authBloc = context.read<AuthBloc>();
+      locationBloc.add(GetLocationEvent());
+      MapUtils.createMarketImageFromAsset("assets/png/taxi-little.png").then(
+        (result) {
+          _markerDriver = result;
+        }
+      );
 
-      locationBloc.positionStream = Geolocator.getPositionStream().listen(
-        (pos) {
-        print('${pos}');
-        // addMarker(
-        //   'driver', 
-        //   pos.latitude, 
-        //   pos.longitude, 
-        //   "Mi Posicion", 
-        //   'Este es el content', 
-        //   _markerDriver,
-        //   pos,
-        // );
+      locationBloc.positionStream =  Geolocator.getPositionStream(
+        locationSettings: AndroidSettings(
+          accuracy: LocationAccuracy.best,
+          distanceFilter: 2,
+        )
+      ).listen((pos) {
+        goToPosition(pos, locationBloc);
+        addMarker(
+          'driver', 
+          pos.latitude, 
+          pos.longitude, 
+          "Mi Posicion", 
+          'Este es el content', 
+          _markerDriver,
+          pos,
+        );
+        //CREO QUE AQUI NO DEBERIA IR SINO ESTO SE GUARDARÁ CUANDO SE PRESIONE EL BOTON CONECTARSE.
+        
+        if(locationBloc.isOnline){
+          BlocProvider.of<LocationBloc>(context).add(SaveLocationEvent(authBloc.user!, pos));
+        }
+
       });
-
-      // locationBloc.positionStream =  Geolocator.getPositionStream(
-      // ).listen((pos) {
-      //   goToPosition(pos, locationBloc);
-      //   addMarker(
-      //     'driver', 
-      //     pos.latitude, 
-      //     pos.longitude, 
-      //     "Mi Posicion", 
-      //     'Este es el content', 
-      //     _markerDriver,
-      //     pos,
-      //   );
-      //   BlocProvider.of<LocationBloc>(context).add(SaveLocationEvent(authBloc.user!, pos));
-      // });
 
     });
   }
@@ -112,7 +108,7 @@ class _HomeScreenInitState extends State<HomeScreenInit> {
 
                 if( state is LocationLoaded ){
                   Position posi = state.pos;
-                  BlocProvider.of<LocationBloc>(context).add(SaveLocationEvent(authBloc.user!, posi));
+                  // BlocProvider.of<LocationBloc>(context).add(SaveLocationEvent(authBloc.user!, posi));
                   CameraPosition currentPos = CameraPosition(
                     target: LatLng(posi.latitude, posi.longitude),
                     zoom: 19,
@@ -125,7 +121,7 @@ class _HomeScreenInitState extends State<HomeScreenInit> {
                       locationBloc.mapController.complete(controller);
                     },
                     myLocationEnabled: true,
-                    // markers: Set<Marker>.of(_markers),
+                    markers: Set<Marker>.of(_markers),
                   );
 
                 }
@@ -145,7 +141,13 @@ class _HomeScreenInitState extends State<HomeScreenInit> {
         floatingActionButton: FloatingActionButton.extended(
           
           onPressed: (){
-            print("Conectarse");
+
+            if(locationBloc.isOnline){
+              //VAMOS A REMOVER LA LOCACION EN TIEMPO REAL DEL TAXI.
+            }else{
+              locationBloc.isOnline = true;
+            }
+
           },
           label: (locationBloc.isOnline) ? const Text('Desconectarse')  : const Text('Conectarse'),
           icon: (locationBloc.isOnline)  ? const Icon(Icons.offline_bolt) : const Icon(Icons.play_circle),
@@ -154,6 +156,12 @@ class _HomeScreenInitState extends State<HomeScreenInit> {
     );
   }
 
+
+
+  void gotoOnline( LocationBloc locationBloc){
+
+
+  }
 
   Future<void> goToPosition(Position pos, LocationBloc locationBloc) async {
     final GoogleMapController controller = await locationBloc.mapController.future;
@@ -192,10 +200,10 @@ class _HomeScreenInitState extends State<HomeScreenInit> {
       rotation: pos.heading
     );
     bool isAdded = _markers.add(marker);
-
-    // if(isAdded){
-    //   setState(() {});
-    // }
+    print(isAdded);
+    if(isAdded){
+      setState(() {});
+    }
   }
 
 }

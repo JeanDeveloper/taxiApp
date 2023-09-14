@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'package:location/location.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:taxi/app/core/errors/exceptions.dart';
 
 abstract class ILocationDataSource{
-  Future<Position> getCurrentLocation();
+  Future<Position?> getCurrentLocation();
 }
 
 class GoogleMapsDataSource extends ILocationDataSource{
@@ -29,9 +28,10 @@ class GoogleMapsDataSource extends ILocationDataSource{
   }
 
   @override
-  Future<Position> getCurrentLocation() async {
+  Future<Position?> getCurrentLocation() async {
 
     bool serviceEnabled;
+    bool notAccept = true;
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
@@ -39,19 +39,17 @@ class GoogleMapsDataSource extends ILocationDataSource{
       final  position = await _determinePosition();
       return position;
     }else{
-
-      bool locationGPS = await Location().requestService();
-
-      if(locationGPS){
-        final  position = await _determinePosition();
-        return position;
-      }else{
-        return Future.error(LocationException('Ha denegado la peticion del GPS'));
+      while(notAccept){
+        bool locationGPS = await Location().requestService();
+        if(locationGPS){
+          notAccept = false;
+          final  position = await _determinePosition();
+          return position;
+        }else{
+          notAccept = true;
+        }
       }
-
     }
-
-
 
   }
 

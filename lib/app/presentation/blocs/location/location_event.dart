@@ -15,6 +15,8 @@ final class SaveLocationEvent extends LocationEvent {
   SaveLocationEvent(this.user, this.pos);
 }
 
-final class OffOrOnEvent extends LocationEvent {
-  const OffOrOnEvent();
+final class RemoveLocationEvent extends LocationEvent {
+  String id;
+  RemoveLocationEvent(this.id);
 }
+
