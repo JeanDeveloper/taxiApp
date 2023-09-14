@@ -40,11 +40,6 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         final jeanresponse = await registerLocation(user.uid, position.latitude, position.longitude);
       }
 
-      if( event is OffOrOnEvent){
-        isOnline = !isOnline;        
-      }
-
-
     });
   }
 

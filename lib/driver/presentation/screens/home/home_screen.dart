@@ -58,19 +58,20 @@ class _HomeScreenInitState extends State<HomeScreenInit> {
       ).listen((pos) {
         goToPosition(pos, locationBloc);
         addMarker(
-          'driver', 
-          pos.latitude, 
-          pos.longitude, 
-          "Mi Posicion", 
-          'Este es el content', 
+          'driver',
+          pos.latitude,
+          pos.longitude,
+          "Mi Posicion",
+          'Este es el content',
           _markerDriver,
           pos,
         );
         //CREO QUE AQUI NO DEBERIA IR SINO ESTO SE GUARDARÁ CUANDO SE PRESIONE EL BOTON CONECTARSE.
+        BlocProvider.of<LocationBloc>(context).add(SaveLocationEvent(authBloc.user!, pos));
         
-        if(locationBloc.isOnline){
-          BlocProvider.of<LocationBloc>(context).add(SaveLocationEvent(authBloc.user!, pos));
-        }
+        // if(locationBloc.isOnline){
+        //   BlocProvider.of<LocationBloc>(context).add(SaveLocationEvent(authBloc.user!, pos));
+        // }
 
       });
 
