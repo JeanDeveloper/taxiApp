@@ -37,7 +37,7 @@ class ButtonWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(10)
           )
         ),
-        backgroundColor: MaterialStateProperty.all(TaxiColors.purple)
+        backgroundColor: MaterialStateProperty.all(TaxiColors.primaryColor)
       ),
 
       onPressed: onpressed,

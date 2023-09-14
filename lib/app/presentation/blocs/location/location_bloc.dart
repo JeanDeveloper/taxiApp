@@ -10,6 +10,7 @@ import 'package:taxi/app/domain/entities/driver.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:taxi/app/domain/usecases/geting_location.dart';
 import 'package:taxi/driver/domain/usecases/register_location.dart';
+import 'package:taxi/driver/domain/usecases/remove_location.dart';
 
 part 'location_event.dart';
 part 'location_state.dart';
@@ -18,6 +19,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
   final GetingLocation  getingLocation;
   final RegisterLocation registerLocation;
+  final RemoveLocation removeLocation;
   GlobalKey<ScaffoldState> key  = GlobalKey<ScaffoldState>();
   Completer<GoogleMapController> mapController = Completer();
   late CameraPosition cameraPosition;
@@ -25,7 +27,11 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   Set<Marker> markers = const <Marker>{};
   bool isOnline = false;
 
-  LocationBloc(this.getingLocation, this.registerLocation) : super(LocationInitial()) {
+  LocationBloc(
+    this.getingLocation, 
+    this.registerLocation, 
+    this.removeLocation
+  ) : super(LocationInitial()) {
     on<LocationEvent>((event, emit) async {
 
       if( event is GetLocationEvent){
@@ -38,6 +44,27 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         final user = event.user;
         final position = event.pos;
         final jeanresponse = await registerLocation(user.uid, position.latitude, position.longitude);
+      }
+
+      if( event is RemoveLocationEvent){
+        final id = event.id;
+        await removeLocation(id);
+      }
+
+      if( event is OnOrOffEvent){
+
+        emit(LocationLoading());
+        final positions = await getingLocation();
+
+        if(isOnline){
+
+        }else{
+          final user = event.driver;
+          final position = event.pos;
+          final jeanresponse = await registerLocation(user.uid, position.latitude, position.longitude);
+        }
+        isOnline = !isOnline;
+        emit(await _failureOrPosition(positions));
       }
 
     });

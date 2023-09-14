@@ -192,7 +192,7 @@ class _CarDetailWidgetState extends State<CarDetailWidget> {
 
             // OutlinedButton(
             //   style: OutlinedButton.styleFrom(
-            //     backgroundColor: TaxiColors.purple,
+            //     backgroundColor: TaxiColors.primaryColors,
             //     padding: const EdgeInsets.symmetric(
             //       horizontal: 150, 
             //       vertical: 15

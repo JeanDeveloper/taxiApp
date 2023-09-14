@@ -128,11 +128,11 @@ class _NumberWidgetState extends State<NumberWidget> {
           ),
 
           Expanded(
-            child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: size.width * .05),              child: CustomButtonWidget(
-                width: size.width,
-                child: const Text("Enviar Codigo", style: TextStyle(color: TaxiColors.white)),
-              ),
+            child: CustomButtonWidget(
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+
+              width: size.width ,
+              child: const Text("Enviar Codigo", style: TextStyle(color: TaxiColors.white)),
             ),
           ),
 

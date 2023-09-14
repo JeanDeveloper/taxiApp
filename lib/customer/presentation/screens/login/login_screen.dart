@@ -23,7 +23,7 @@ class LoginScreen extends StatelessWidget {
                 enableStepTapping: false,
                 steppingEnabled: false,
                 stepColor: Colors.grey,
-                activeStepColor: TaxiColors.purple,
+                activeStepColor: TaxiColors.primaryColor,
                 numbers: const [1,2,3],
                 numberStyle: const TextStyle(color: TaxiColors.white, fontSize: 10),
                 enableNextPreviousButtons: false,

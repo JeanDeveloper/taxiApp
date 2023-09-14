@@ -8,8 +8,9 @@ class RemoveLocation{
   final IMapRepository mapRepository;
   RemoveLocation(this.mapRepository);
 
-  Future<Either<Failure,void>> call(String id, double lt, double lng) async {
-    return await mapRepository.registerLocation(id, lt, lng);
+  Future<Either<Failure,bool>> call(String id) async {
+    return await mapRepository.deleteLocation(id);
   }
 
 }
+

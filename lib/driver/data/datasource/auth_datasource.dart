@@ -22,6 +22,8 @@ abstract class IAuthDataSource{
 
   Future<UploadFileResponse?> uploadFile(File file, PhotoType photoType);
 
+  Future<void> logout();
+
 }
 
 class FirebaseDataSource extends IAuthDataSource{
@@ -119,6 +121,13 @@ class FirebaseDataSource extends IAuthDataSource{
       return responseModel;
     }
     return null;
+
+  }
+  
+  @override
+  Future<void> logout() async {
+
+    await _auth.signOut();
 
   }
   

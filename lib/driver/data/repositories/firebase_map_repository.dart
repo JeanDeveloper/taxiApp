@@ -19,9 +19,13 @@ class FirebaseMapRepository extends IMapRepository{
   }
   
   @override
-  Future<Either<Failure, void>> deleteLocation(String id) {
-    // TODO: implement deleteLocation
-    throw UnimplementedError();
+  Future<Either<Failure, bool>> deleteLocation(String id) async {
+    try {
+      final wasdelete = await mapDataSource.deleteLocation(id);
+      return Right(wasdelete);
+    } on Exception catch(e){
+      return Left(GeneralFailure(message: e.runtimeType.toString()));
+    } 
   }
 
 }

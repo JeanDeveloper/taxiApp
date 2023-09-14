@@ -30,7 +30,7 @@ class CustomButtonWidget extends StatelessWidget {
       child: ElevatedButton(
         style: const ButtonStyle(
 
-          backgroundColor: MaterialStatePropertyAll(TaxiColors.purple),
+          backgroundColor: MaterialStatePropertyAll(TaxiColors.primaryColor),
 
           shape: MaterialStatePropertyAll(
             RoundedRectangleBorder(
@@ -42,7 +42,7 @@ class CustomButtonWidget extends StatelessWidget {
               )
             )
           ),
-      
+
         ),
         onPressed: onPressed,
         child: child,

@@ -20,3 +20,8 @@ final class RemoveLocationEvent extends LocationEvent {
   RemoveLocationEvent(this.id);
 }
 
+final class OnOrOffEvent extends LocationEvent {
+  final Driver driver;
+  final Position pos;
+  const OnOrOffEvent( this.driver, this.pos );
+}

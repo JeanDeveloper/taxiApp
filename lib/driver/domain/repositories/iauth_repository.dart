@@ -27,4 +27,6 @@ abstract class IAuthRepository{
   
   Future<Either<Failure, UploadFileResponse?>> uploadFile( File file, PhotoType photoType );
 
+  Future<Either<Failure, void>> logout();
+
 }

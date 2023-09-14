@@ -3,6 +3,5 @@ import 'package:taxi/app/core/errors/failure.dart';
 
 abstract class IMapRepository{
   Future<Either<Failure, void>> registerLocation(String id, double lt, double lng);
-  Future<Either<Failure, void>> deleteLocation(String id);
-
+  Future<Either<Failure, bool>> deleteLocation(String id);
 }

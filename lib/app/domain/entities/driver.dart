@@ -1,5 +1,6 @@
 import 'package:taxi/app/domain/entities/gender.dart';
 import 'package:taxi/app/domain/entities/iuser.dart';
+import 'package:taxi/driver/data/models/jean_user_model.dart';
 
 class Driver extends IUser {
 
@@ -14,6 +15,9 @@ class Driver extends IUser {
   String? documentPath;
   String? photoPath;
   String? licensePath;
+  bool? isActive;
+  int? userType;
+  JeanPayoutModel? payout;
 
   Driver({
     required this.uid,
@@ -27,6 +31,9 @@ class Driver extends IUser {
     this.documentPath,
     this.photoPath,
     this.licensePath,
+    this.isActive,
+    this.userType,
+    this.payout,
   });
   
 }

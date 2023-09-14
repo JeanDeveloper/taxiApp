@@ -4,7 +4,7 @@ import 'package:geoflutterfire2/geoflutterfire2.dart';
 
 abstract class IGeoFireDataSource{
   Future<void> registerLocation(String id, double lat, double lng);
-  Future<void> deleteLocation(String id);
+  Future<bool> deleteLocation(String id);
 }
 
 class GeoFireDataSource extends IGeoFireDataSource{
@@ -28,8 +28,9 @@ class GeoFireDataSource extends IGeoFireDataSource{
   }
   
   @override
-  Future<void> deleteLocation(String id) {
-    return _db.collection('locations').doc(id).delete();
+  Future<bool> deleteLocation(String id) async {
+    await _db.collection('locations').doc(id).delete();
+    return true;
   } 
   
 

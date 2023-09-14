@@ -40,7 +40,7 @@ class LoginScreen extends StatelessWidget {
                         enableStepTapping: false,
                         steppingEnabled: false,
                         stepColor: Colors.grey,
-                        activeStepColor: TaxiColors.purple,
+                        activeStepColor: TaxiColors.primaryColor,
                         lineLength: size.width * .005,
                         numbers: const [1, 2, 3, 4, 5, 6],
                         numberStyle: const TextStyle(
@@ -56,7 +56,7 @@ class LoginScreen extends StatelessWidget {
                 BlocBuilder<AuthBloc, AuthState>(
                   builder: (_, state) {
 
-                    if (state is AuthUnvalidated) {
+                    if (state is AuthUnvalidated || state is AuthLogout) {
                       return const NumberWidget();
                     }
 

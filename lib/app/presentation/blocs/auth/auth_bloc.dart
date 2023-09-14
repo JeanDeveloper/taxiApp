@@ -9,6 +9,7 @@ import 'package:taxi/app/domain/entities/drive.dart';
 import 'package:taxi/app/domain/entities/iuser.dart';
 import 'package:taxi/app/domain/entities/payout.dart';
 import 'package:taxi/app/domain/entities/driver.dart';
+import 'package:taxi/app/domain/usecases/do_logout.dart';
 import 'package:taxi/app/domain/usecases/get_user.dart';
 import 'package:taxi/app/domain/usecases/sending_otp.dart';
 import 'package:taxi/app/domain/usecases/upload_file.dart';
@@ -30,6 +31,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final GetStateCarousel getStateCarousel;
   final SaveStateCarousel saveStateCarousel;
   final UploadingFileCU uploadingFile;
+  final DoLogoutCU doLogout;
   
   int stepSelected = 0;
   String? verification;
@@ -51,6 +53,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     this.saveStateCarousel,
     this.uploadingFile,
     this.registerUser,
+    this.doLogout,
   ) : super(AuthInitial()) {
     on<AuthEvent>((event, emit) async {
 
@@ -189,7 +192,27 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       }
 
+      if( event is DoLogoutEvent ){
+        emit(AuthLoading());
+        await doLogout();
+        cleanData();
+        emit(AuthLogout());
+      }
+
     });
+  }
+
+  void cleanData(){
+    stepSelected= 0;
+    verification= null;
+    phone= "";
+    user= null;
+    drive= null;
+    payout= null;
+    photoProfile= null;
+    photoDocument= null;
+    photoLicense= null;
+    photoCardOwner= null;
   }
 
 }
